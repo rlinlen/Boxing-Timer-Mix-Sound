@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Boxing_Timer_Mix_SoundApp: App {
+    @StateObject var timerManager: TimerManager = TimerManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(timerManager)
         }
     }
 }

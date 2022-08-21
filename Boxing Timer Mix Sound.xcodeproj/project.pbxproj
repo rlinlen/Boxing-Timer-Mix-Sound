@@ -11,6 +11,9 @@
 		A0BC248028B114B900D79712 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC247F28B114B900D79712 /* ContentView.swift */; };
 		A0BC248228B114BA00D79712 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0BC248128B114BA00D79712 /* Assets.xcassets */; };
 		A0BC248528B114BA00D79712 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0BC248428B114BA00D79712 /* Preview Assets.xcassets */; };
+		A0BC248C28B116B300D79712 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC248B28B116B300D79712 /* ControlView.swift */; };
+		A0BC249528B12BA200D79712 /* service-bell-ring-14610.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0BC249428B12BA200D79712 /* service-bell-ring-14610.mp3 */; };
+		A0BC249928B290D600D79712 /* service-bell-ring.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A0BC249828B290D600D79712 /* service-bell-ring.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,10 @@
 		A0BC247F28B114B900D79712 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A0BC248128B114BA00D79712 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0BC248428B114BA00D79712 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A0BC248B28B116B300D79712 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
+		A0BC248E28B12B5500D79712 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
+		A0BC249428B12BA200D79712 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
+		A0BC249828B290D600D79712 /* service-bell-ring.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "service-bell-ring.m4a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +58,10 @@
 		A0BC247C28B114B900D79712 /* Boxing Timer Mix Sound */ = {
 			isa = PBXGroup;
 			children = (
+				A0BC249328B12BA200D79712 /* Sounds */,
 				A0BC247D28B114B900D79712 /* Boxing_Timer_Mix_SoundApp.swift */,
 				A0BC247F28B114B900D79712 /* ContentView.swift */,
+				A0BC248B28B116B300D79712 /* ControlView.swift */,
 				A0BC248128B114BA00D79712 /* Assets.xcassets */,
 				A0BC248328B114BA00D79712 /* Preview Content */,
 			);
@@ -62,9 +71,28 @@
 		A0BC248328B114BA00D79712 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				A0BC248D28B12B5500D79712 /* Sounds */,
 				A0BC248428B114BA00D79712 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A0BC248D28B12B5500D79712 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				A0BC248E28B12B5500D79712 /* service-bell-ring-14610.mp3 */,
+			);
+			name = Sounds;
+			path = "Boxing Timer Mix Sound/Assets.xcassets/service-bell-ring-14610.dataset/Sounds";
+			sourceTree = SOURCE_ROOT;
+		};
+		A0BC249328B12BA200D79712 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				A0BC249828B290D600D79712 /* service-bell-ring.m4a */,
+				A0BC249428B12BA200D79712 /* service-bell-ring-14610.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,8 +153,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0BC249528B12BA200D79712 /* service-bell-ring-14610.mp3 in Resources */,
 				A0BC248528B114BA00D79712 /* Preview Assets.xcassets in Resources */,
 				A0BC248228B114BA00D79712 /* Assets.xcassets in Resources */,
+				A0BC249928B290D600D79712 /* service-bell-ring.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0BC248028B114B900D79712 /* ContentView.swift in Sources */,
+				A0BC248C28B116B300D79712 /* ControlView.swift in Sources */,
 				A0BC247E28B114B900D79712 /* Boxing_Timer_Mix_SoundApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -196,7 +227,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -251,7 +282,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

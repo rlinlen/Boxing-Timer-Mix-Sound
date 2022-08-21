@@ -6,16 +6,24 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
+    @EnvironmentObject var timerManager: TimerManager
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        ZStack(){
+            Color.black.ignoresSafeArea()
+            ControlView()
+        }
+        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(TimerManager())
     }
 }
+
