@@ -18,3 +18,12 @@ struct Boxing_Timer_Mix_SoundApp: App {
         }
     }
 }
+
+//TODO: add idle prevention
+//TODO: format UI
+//TODO: save settings
+//TODO: customzed ending sound behaviour
+//TODO: setting's range
+//TODO: add more music
+//TODO: light up when running
+//TODO: Fix text display movement
