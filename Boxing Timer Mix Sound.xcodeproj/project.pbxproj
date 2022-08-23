@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A032004728B46D8500F153DD /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032004628B46D8500F153DD /* TimePicker.swift */; };
 		A05CEEBF28B38249004CB9DF /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CEEBE28B38249004CB9DF /* TimerManager.swift */; };
 		A05CEEC128B382AC004CB9DF /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CEEC028B382AC004CB9DF /* SettingView.swift */; };
 		A05CEEC328B3BEEE004CB9DF /* bell_ring_b.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A05CEEC228B3BEEE004CB9DF /* bell_ring_b.m4a */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A032004628B46D8500F153DD /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 		A05CEEBE28B38249004CB9DF /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		A05CEEC028B382AC004CB9DF /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		A05CEEC228B3BEEE004CB9DF /* bell_ring_b.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = bell_ring_b.m4a; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				A0BC247F28B114B900D79712 /* ContentView.swift */,
 				A0BC248B28B116B300D79712 /* ControlView.swift */,
 				A05CEEC028B382AC004CB9DF /* SettingView.swift */,
+				A032004628B46D8500F153DD /* TimePicker.swift */,
 				A05CEEBE28B38249004CB9DF /* TimerManager.swift */,
 				A0BC248128B114BA00D79712 /* Assets.xcassets */,
 				A0BC248328B114BA00D79712 /* Preview Content */,
@@ -177,6 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A032004728B46D8500F153DD /* TimePicker.swift in Sources */,
 				A0BC248028B114B900D79712 /* ContentView.swift in Sources */,
 				A05CEEC128B382AC004CB9DF /* SettingView.swift in Sources */,
 				A05CEEBF28B38249004CB9DF /* TimerManager.swift in Sources */,

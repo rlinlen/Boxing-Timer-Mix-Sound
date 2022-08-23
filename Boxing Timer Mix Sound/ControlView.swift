@@ -16,6 +16,9 @@ struct ControlView: View {
     
     var body: some View {
         VStack {
+            
+            Spacer()
+            
             ClockDisplayView()
 //                .environmentObject(timerManager)
             
@@ -25,7 +28,7 @@ struct ControlView: View {
             
 //            Spacer()
             
-            SettingView()
+            SettingView().disabled(timerManager.isTiming)
             
         }
         .onAppear() {
@@ -198,7 +201,7 @@ struct SoundAdhocView: View {
                 value: $volume,
                 in: 0...10
             )
-            Text("\(volume)")
+            Text("\(String(format: "%.1f", volume))")
                 .foregroundColor(.white)
         }
         
@@ -230,7 +233,9 @@ struct ControlBarView: View {
             }
             
             
-        }.onAppear {
+        }
+        .padding(20)
+        .onAppear {
         }
         
     }
