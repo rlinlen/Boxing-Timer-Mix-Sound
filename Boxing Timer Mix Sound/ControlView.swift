@@ -11,7 +11,7 @@ import AVFoundation
 import Combine
 
 struct ControlView: View {
-//    @StateObject var timerManager: TimerManager = TimerManager()
+    //    @StateObject var timerManager: TimerManager = TimerManager()
     @EnvironmentObject var timerManager: TimerManager
     
     var body: some View {
@@ -26,7 +26,7 @@ struct ControlView: View {
             
             PlayBarView()
             
-//            Spacer()
+            //            Spacer()
             
             SettingView()
                 .environmentObject(timerManager)
@@ -40,114 +40,158 @@ struct ControlView: View {
 }
 
 struct ClockDisplayView: View{
-//    @State var timeRemaining: Int
-//    @Binding var timer: Timer.TimerPublisher
-//    @Binding var timer: Publishers.Autoconnect<Timer.TimerPublisher>
+    //    @State var timeRemaining: Int
+    //    @Binding var timer: Timer.TimerPublisher
+    //    @Binding var timer: Publishers.Autoconnect<Timer.TimerPublisher>
     @EnvironmentObject var timerManager: TimerManager
-//    @Binding var updateDummy: Int
+    //    @Binding var updateDummy: Int
     @State var waitTimerOpacity = 1.0
     
-//    @State var timerText = "00:00"
-//    @State var timerIntervalText = "00:00"
-//    @State var timerText = getTimerText(by: timerManager.timeRemaining)
+    private let roundRemainingTimeFontSize : CGFloat = 140
+    //    @State var timerText = "00:00"
+    //    @State var timerIntervalText = "00:00"
+    //    @State var timerText = getTimerText(by: timerManager.timeRemaining)
     
-    private var gridItemLayout = [GridItem(.fixed(150)), GridItem(.flexible())]
+    private var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.fixed(30)), GridItem(.flexible()), GridItem(.flexible())]
     
     init(){
-//        self.timerText = getTimerText(by: timerManager.timeRemaining)
+        //        self.timerText = getTimerText(by: timerManager.timeRemaining)
     }
-//
+    //
     var body: some View {
         VStack{
-//            Text("Current Ruond: \(self.timerManager.repeatRound - self.timerManager.repeatRoundRemaining + 1), Round Remaining: \(self.timerManager.repeatRoundRemaining - 1 )")
-//                .foregroundColor(.white)
-//            Text("Wait Remaing: \(formatSecondsToMinSec(by: self.timerManager.waitTimeRemaining))")
-//                .foregroundColor(.white)
-//
-//            Text("Round Remaing: \(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining))")
-//                .foregroundColor(.white)
-//
-//            Text("Interval Remaing: \(formatSecondsToMinSec(by: self.timerManager.intervalTimeRemaining))")
-//                .foregroundColor(.white)
-////            LazyVGrid(columns: gridItemLayout, spacing: 20) {
-            HStack{
-                VStack{
-                    HStack{
+            //            Text("Current Ruond: \(self.timerManager.repeatRound - self.timerManager.repeatRoundRemaining + 1), Round Remaining: \(self.timerManager.repeatRoundRemaining - 1 )")
+            //                .foregroundColor(.white)
+            //            Text("Wait Remaing: \(formatSecondsToMinSec(by: self.timerManager.waitTimeRemaining))")
+            //                .foregroundColor(.white)
+            //
+            //            Text("Round Remaing: \(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining))")
+            //                .foregroundColor(.white)
+            //
+            //            Text("Interval Remaing: \(formatSecondsToMinSec(by: self.timerManager.intervalTimeRemaining))")
+            //                .foregroundColor(.white)
+            ////            LazyVGrid(columns: gridItemLayout, spacing: 20) {
+            HStack(alignment: .bottom){
+                VStack(alignment: .leading){
+                    HStack(alignment: .bottom){
                         Text("\(getCurrentRound())")//CurrentRound
                             .foregroundColor(.white)
-    //                        .padding(40)
-                            .background(.cyan)
+                        //                        .padding(40)
+                        //                            .background(.cyan)
                             .font(.system(size: 70))
-    //                        .frame(maxWidth: .infinity, alignment: .leading)
-                        Text("/ \(self.timerManager.repeatRound)")//CurrentRound
+//                            .bold()
+                        //                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("/")//CurrentRound
                             .foregroundColor(.white)
-                            .background(.cyan)
-                            .font(.system(size: 40))
-    //                        .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom, 2)
+                            .font(.system(size: 30))
+                        Text(" \(self.timerManager.repeatRound)")//CurrentRound
+                            .foregroundColor(.white)
+                            .font(.system(size: 30))
+                            .bold()
+                        //                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-//                    .frame(width: 300, alignment: .bottom)
+                    //                    .frame(width: 300, alignment: .bottom)
                     
                     Text("Round")
                         .foregroundColor(.white)
-//                        .padding(40)
-                        .background(.cyan)
+                    //                        .padding(40)
+                    //                        .background(.cyan)
                         .font(.system(size: 20))
-//                        .frame(maxWidth: .infinity, alignment: .leading)
+                    //                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .background(.blue)
+//                .background(.blue)
+                .padding(.leading, 10)
+                //                Divider().foregroundColor(.white)
                 
-                VStack{
+                Spacer()
+                
+                VStack(alignment: .trailing){
                     Text("\(formatSecondsToMinSec(by: self.timerManager.intervalTimeRemaining))")
                         .foregroundColor(.white)
-        //                    .background(.blue)
-                        .padding(.leading, 50)
-                        .padding(.trailing, 50)
+                    //                    .background(.blue)
+                    //                        .padding(.leading, 50)
+                    //                        .padding(.trailing, 50)
                         .font(.system(size: 60))
-                        .minimumScaleFactor(0.01)
+//                        .minimumScaleFactor(0.01)
                     Text("Interval Time")
                         .foregroundColor(.white)
                         .font(.system(size: 20))
                     
                 }
-                .background(.brown)
+//                .background(.brown)
+                .padding(.trailing, 10)
             }
             
-           
-               
-//                    .frame(width: 3000)
-//            }
-            Text("\(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining))")
-                .foregroundColor(.white)
-//                    .background(.blue)
-                .font(.system(size: 130))
-                .minimumScaleFactor(0.01)
-                .onReceive(self.timerManager.currentTimePublisher) { _ in
-                    if (self.timerManager.currentTimerStage == TimerManager.timerStage.Wait){
-                        
-                        if self.timerManager.waitTimeRemaining > 0 {
-                            self.timerManager.waitTimeRemaining -= 1
-                        }
-                        if self.timerManager.waitTimeRemaining == 0 {
-                            self.timerManager.timesUp(TimerManager.timerStage.Wait)
-                        }
-                    }
-                    else if (self.timerManager.currentTimerStage == TimerManager.timerStage.Round){
-                        if self.timerManager.roundTimeRemaining > 0 {
-                            self.timerManager.roundTimeRemaining -= 1
-                        }
-                        if self.timerManager.roundTimeRemaining == 0 {
-                            self.timerManager.timesUp(TimerManager.timerStage.Round)
-                        }
-                    }else if (self.timerManager.currentTimerStage == TimerManager.timerStage.Interval){
-                        if self.timerManager.intervalTimeRemaining > 0 {
-                            self.timerManager.intervalTimeRemaining -= 1
-                        }
-                        if self.timerManager.intervalTimeRemaining == 0 {
-                            self.timerManager.timesUp(TimerManager.timerStage.Interval)
-                        }
-                    }
-                }
+            Divider()
+                .background(.white)
             
+            //                    .frame(width: 3000)
+            //            }
+            LazyVGrid(columns: gridItemLayout, spacing: 0) {
+                Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[0]))")
+                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+                //                    .background(.blue)
+                    .font(.system(size: roundRemainingTimeFontSize))
+                    .minimumScaleFactor(0.01)
+                    .padding(.leading, 10)
+//                    .padding(.trailing, 10)
+                    .onReceive(self.timerManager.currentTimePublisher) { _ in
+                        if (self.timerManager.currentTimerStage == TimerManager.timerStage.Wait){
+                            
+                            if self.timerManager.waitTimeRemaining > 0 {
+                                self.timerManager.waitTimeRemaining -= 1
+                            }
+                            if self.timerManager.waitTimeRemaining == 0 {
+                                self.timerManager.timesUp(TimerManager.timerStage.Wait)
+                            }
+                        }
+                        else if (self.timerManager.currentTimerStage == TimerManager.timerStage.Round){
+                            if self.timerManager.roundTimeRemaining > 0 {
+                                self.timerManager.roundTimeRemaining -= 1
+                            }
+                            if self.timerManager.roundTimeRemaining == 0 {
+                                self.timerManager.timesUp(TimerManager.timerStage.Round)
+                            }
+                        }else if (self.timerManager.currentTimerStage == TimerManager.timerStage.Interval){
+                            if self.timerManager.intervalTimeRemaining > 0 {
+                                self.timerManager.intervalTimeRemaining -= 1
+                            }
+                            if self.timerManager.intervalTimeRemaining == 0 {
+                                self.timerManager.timesUp(TimerManager.timerStage.Interval)
+                            }
+                        }
+                    }
+                Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[1]))")
+                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+                //                    .background(.blue)
+                    .font(.system(size: roundRemainingTimeFontSize))
+                    .minimumScaleFactor(0.01)
+                Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[2]))")
+                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+                //                    .background(.blue)
+                    .font(.system(size: roundRemainingTimeFontSize))
+                    .minimumScaleFactor(0.01)
+                Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[3]))")
+                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+                //                    .background(.blue)
+                    .font(.system(size: roundRemainingTimeFontSize))
+                    .minimumScaleFactor(0.01)
+                Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[4]))")
+                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+                //                    .background(.blue)
+                    .font(.system(size: roundRemainingTimeFontSize))
+                    .minimumScaleFactor(0.01)
+            }
+//            .background(Color.teal)
+            
+            Divider()
+                .background(.white)
             
             
             Text("\(formatSecondsToMinSec(by: self.timerManager.waitTimeRemaining))")
@@ -217,19 +261,19 @@ struct ControlBarView: View {
         HStack {
             ControlButton(systemIconName: "stop.circle", action: {
                 print("Stop Button Pressed")
-//                self.soundManager.playSound(name: "service-bell-ring-14610")
+                //                self.soundManager.playSound(name: "service-bell-ring-14610")
                 self.timerManager.manualStopTimer()
             })
             if (self.timerManager.isTiming){
                 ControlButton(systemIconName: "pause.circle", action: {
                     print("Pause Button Pressed")
-    //                self.soundManager.playSound(name: "service-bell-ring-14610")
+                    //                self.soundManager.playSound(name: "service-bell-ring-14610")
                     self.timerManager.pauseTimer()
                 })
             } else {
                 ControlButton(systemIconName: "play.circle", action: {
                     print("Start Button Pressed")
-    //                self.soundManager.playSound(name: "service-bell-ring-14610")
+                    //                self.soundManager.playSound(name: "service-bell-ring-14610")
                     self.timerManager.startTimer()
                 })
             }
@@ -249,14 +293,14 @@ struct ControlButton: View{
     
     var body: some View{
         Button(action:
-            self.action
+                self.action
         ){
             Image(systemName: systemIconName)
                 .font(.system(size: 70))
                 .foregroundColor(.white)
                 .buttonStyle(PlainButtonStyle())
         }
-//        .frame(width: 50, height: 50)
+        //        .frame(width: 50, height: 50)
     }
 }
 

@@ -12,10 +12,26 @@ import Combine
 
 class TimerManager: ObservableObject {
     @Published var currentTimePublisher = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @Published var roundTime: Int = 5
-    @Published var intervalTime: Int = 3
-    @Published var waitTime: Int = 2
-    @Published var repeatRound: Int = 1
+    @Published var roundTime: Int = (UserDefaults.standard.object(forKey: "roundTime") as? Int ?? K.Timer.roundTime) {
+        didSet {
+            UserDefaults.standard.set(self.roundTime, forKey: "roundTime")
+        }
+    }
+    @Published var intervalTime: Int = (UserDefaults.standard.object(forKey: "intervalTime") as? Int ?? K.Timer.intervalTime) {
+        didSet {
+            UserDefaults.standard.set(self.intervalTime, forKey: "intervalTime")
+        }
+    }
+    @Published var waitTime: Int = (UserDefaults.standard.object(forKey: "waitTime") as? Int ?? K.Timer.waitTime) {
+        didSet {
+            UserDefaults.standard.set(self.waitTime, forKey: "waitTime")
+        }
+    }
+    @Published var repeatRound: Int = (UserDefaults.standard.object(forKey: "repeatRound") as? Int ?? K.Timer.repeatRound) {
+        didSet {
+            UserDefaults.standard.set(self.repeatRound, forKey: "repeatRound")
+        }
+    }
     @Published var isTiming: Bool = true
     
     @Published var roundTimeRemaining: Int = 999
@@ -122,26 +138,44 @@ class TimerManager: ObservableObject {
 //    self.soundManager.playSound(name: "service-bell-ring-14610")
 }
 
-struct SoundTrack {
+struct SoundTrack: Codable {
     var id: String
     var displayName: String
     var fileName: String
+    var url: URL?
 }
 
 class SoundManager: ObservableObject {
     var audioPlayer: AVAudioPlayer? = nil
     var audioSession: AVAudioSession
-    var volume: Float = 1
-    var numberOfLoops: Int = 0
+    var volume: Float = (UserDefaults.standard.object(forKey: "volume") as? Float ?? K.Sound.volume) {
+        didSet {
+            UserDefaults.standard.set(self.volume, forKey: "volume")
+        }
+    }
+    var numberOfLoops: Int = (UserDefaults.standard.object(forKey: "numberOfLoops") as? Int ?? K.Sound.numberOfLoops) {
+        didSet {
+            UserDefaults.standard.set(self.numberOfLoops, forKey: "numberOfLoops")
+        }
+    }
     
-    @Published var soundTrackType: String = "Default Ring 1"
-    @Published var soundTrackFullURL: URL
+    @Published var currentSoundTrackId: String = (UserDefaults.standard.object(forKey: "currentSoundTrackId") as? String ?? K.Sound.currentSoundTrackId) {
+        didSet {
+            UserDefaults.standard.set(self.currentSoundTrackId, forKey: "currentSoundTrackId")
+        }
+    }
+//    @Published var soundTrackFullURL: URL
     
-    var soundTrackMenu = [
-        SoundTrack(id: "defaulebell1", displayName: "Default Bell 1", fileName: "bell_ring_b.m4a"),
-        SoundTrack(id: "defaulebell2", displayName: "Default Bell 2", fileName: "service-bell-ring.m4a"),
-        SoundTrack(id: "customized", displayName: "Customized", fileName: "")
-    ]
+    @Published var soundTrackMenu: [SoundTrack]
+    {
+        didSet {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(self.soundTrackMenu) {
+                UserDefaults.standard.set(encoded, forKey: "soundTrackMenu")
+            }
+//            UserDefaults.standard.set(, forKey: "soundTrackMenu")
+        }
+    }
 //    private var _soundTrackFull: URL? = nil
 //    private var _soundTrackExtension: String = ""
 //    private var _soundTrackFullNoExtension: URL? = nil
@@ -160,12 +194,21 @@ class SoundManager: ObservableObject {
 //    }
     
     init(){
-        func getSoundTrackURL(name: String = "bell_ring_b", type: String = "m4a") -> URL?{
+//        func getSoundTrackURL(name: String = "bell_ring_b", type: String = "m4a") -> URL?{
+//            guard let url = Bundle.main.url(forResource: name, withExtension: type) else { return nil }
+//            return url
+//        }
+        func getSoundTrackURL(by fullname: NSString) -> URL?{
+            let name = fullname.deletingPathExtension
+            let type = fullname.pathExtension
             guard let url = Bundle.main.url(forResource: name, withExtension: type) else { return nil }
             return url
         }
+        func getURLfromCache(by key: String) -> URL? {
+            return UserDefaults.standard.url(forKey: key)
+        }
         
-        soundTrackFullURL = getSoundTrackURL()!
+//        soundTrackFullURL = getSoundTrackURL()!
         audioSession = AVAudioSession.sharedInstance()
         do {
             // Set the audio session category, mode, and options.
@@ -173,13 +216,31 @@ class SoundManager: ObservableObject {
         } catch {
             print("Failed to set audio session category.")
         }
+        
+        soundTrackMenu = K.Sound.soundTrackMenu
+        if let data = UserDefaults.standard.object(forKey: "soundTrackMenu") as? Data {
+            let decoder = JSONDecoder()
+            if let savedData = try? decoder.decode([SoundTrack].self, from: data) {
+                // Do wantever you want with `savedData`
+//                print(savedData)
+                soundTrackMenu = savedData
+            }
+        }
     }
     
-    func getSoundTrackURL(by fullname: NSString) -> URL?{
-        let name = fullname.deletingPathExtension
-        let type = fullname.pathExtension
+    static func getSoundTrackURL(by filename: NSString) -> URL?{
+        let name = filename.deletingPathExtension
+        let type = filename.pathExtension
         guard let url = Bundle.main.url(forResource: name, withExtension: type) else { return nil }
         return url
+    }
+    func getSoundTrackURL(from id: String) -> URL?{
+        for soundTrack in soundTrackMenu {
+            if (id == soundTrack.id){
+                return soundTrack.url
+            }
+        }
+        return soundTrackMenu[0].url
     }
     
     func playSound(url: URL? = nil){
@@ -188,7 +249,11 @@ class SoundManager: ObservableObject {
         var newUrl = url
         
         if (newUrl == nil){
-            newUrl = self.soundTrackFullURL
+            newUrl = self.getSoundTrackURL(from: self.currentSoundTrackId)
+            if (newUrl == nil){
+                newUrl = self.getSoundTrackURL(from: self.soundTrackMenu[0].id)
+                self.currentSoundTrackId = self.soundTrackMenu[0].id
+            }
         }
 //        print("Path: \(path)")
 //        let url = URL(fileURLWithPath: path!)

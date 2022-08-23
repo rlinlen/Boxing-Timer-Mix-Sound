@@ -89,14 +89,9 @@ struct SettingsGrid: View{
                         })
                     Divider()
                     SettingSoundTrack(
-                        timerParameter: $timerManager.soundManager.soundTrackType,
+                        timerParameter: $timerManager.soundManager.currentSoundTrackId,
                         soundManager: $timerManager.soundManager,
-                        label: "Sound track: ",
-                        action: { value in
-                            //                    print("action!")
-                            //                    print(value)
-                            timerManager.soundManager.soundTrackFullURL = value
-                        }
+                        label: "Sound track: "
                     )
                     Spacer()
                 }
@@ -105,7 +100,7 @@ struct SettingsGrid: View{
                 
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.teal)
+            //            .background(Color.teal)
             //            .background(Color.teal.ignoresSafeArea(.all, edges: .all))
             //        .disabled(timerManager.isTiming)
             .navigationBarTitle(Text("Settings"), displayMode: .inline)
@@ -220,7 +215,7 @@ struct SettingSoundTrack: View {
     @Binding var soundManager: SoundManager
     @State var label: String
     @State private var isImporting: Bool = false
-    @State var action: (URL)->Void
+//    @State var action: (URL)->Void
     
     var body: some View{
         VStack{
@@ -242,18 +237,21 @@ struct SettingSoundTrack: View {
                 //                    Text(String(round))
                 //                }
             }
-//            .font(.system(size: 50))
+            //            .font(.system(size: 50))
             .onChange(of: timerParameter) { value in
-                //                print(value)
-                if(value == "customized"){
+                print(value)
+                
+                if(value == K.Sound.customizedSoundTrackId){
                     isImporting = true
                 }else{
-                    for item in soundManager.soundTrackMenu {
-                        if (item.id == value) {
-                            print(item.fileName)
-                            soundManager.soundTrackFullURL = soundManager.getSoundTrackURL(by: item.fileName as NSString)!
-                        }
-                    }
+                    //                    print(value)
+                    soundManager.currentSoundTrackId = value
+                    //                    for item in soundManager.soundTrackMenu {
+                    //                        if (item.id == value) {
+                    //                            print(item.fileName)
+                    //                            soundManager.soundTrackFullURL = soundManager.getSoundTrackURL(by: item.fileName as NSString)!
+                    //                        }
+                    //                    }
                 }
                 
             }
@@ -262,7 +260,16 @@ struct SettingSoundTrack: View {
                           allowsMultipleSelection: false){ result in
                 do {
                     guard let selectedFile: URL = try result.get().first else { return }
-                    self.action(selectedFile)
+                    soundManager.currentSoundTrackId = K.Sound.customizedSoundTrackId
+                    for i in soundManager.soundTrackMenu.indices {
+                        print(soundManager.soundTrackMenu[i].id)
+                        if (soundManager.soundTrackMenu[i].id == K.Sound.customizedSoundTrackId){
+//                            print(selectedFile)
+                            soundManager.soundTrackMenu[i].url = selectedFile
+                        }
+                    }
+                    
+//                    self.action(selectedFile)
                     //                            print(selectedFile)
                     //                    print(selectedFile.pathExtension)
                     //                    print(selectedFile.deletingPathExtension())

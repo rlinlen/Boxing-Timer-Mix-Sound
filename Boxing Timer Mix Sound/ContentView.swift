@@ -16,7 +16,7 @@ struct ContentView: View {
             Color.black.ignoresSafeArea()
             ControlView()
         }
-        
+        .onAppear { UIApplication.shared.isIdleTimerDisabled = true }
     }
 }
 
