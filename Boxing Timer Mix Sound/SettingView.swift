@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct SettingView: View{
+    @EnvironmentObject var timerManager: TimerManager
     @State var isShowingSettingSheet = false
     
     var body: some View{
@@ -18,6 +19,7 @@ struct SettingView: View{
             }
             .sheet(isPresented: $isShowingSettingSheet) {
                 SettingsGrid(showSheetView: self.$isShowingSettingSheet)
+                //                    .environmentObject(timerManager)
             }
             //                .foregroundColor(.white)
             //            SettingsGrid()
@@ -39,45 +41,66 @@ struct SettingsGrid: View{
     
     var body: some View{
         NavigationView {
-            VStack(spacing: 30){
-                //            LazyVGrid(columns: gridItemLayout, spacing: 25){
-                SettingItemInt(
-                    timerParameter: $timerManager.repeatRound,
-                    //                        timerParameterRemaining: $timerManager.repeatRoundRemaining,
-                    label: "Round Number: ",
-                    action: { value in
-                        print(value)
-                        timerManager.repeatRoundRemaining = Int(value)
-                    })
-                SettingItemTime(
-                    timerParameter: $timerManager.waitTime,
-                    timerParameterRemaining: $timerManager.waitTimeRemaining,
-                    label: "Wait Time: ")
-                SettingItemTime(
-                    timerParameter: $timerManager.roundTime,
-                    timerParameterRemaining: $timerManager.roundTimeRemaining,
-                    label: "Round Time: ")
-                SettingItemTime(
-                    timerParameter: $timerManager.intervalTime,
-                    timerParameterRemaining: $timerManager.intervalTimeRemaining,
-                    label: "Interval Time: ")
-                SettingItemInt(
-                    timerParameter: $timerManager.soundManager.numberOfLoops,
-                    label: "Sound Loop Number: ",
-                    action: {
-                        value in
-                    })
-                SettingSoundTrack(
-                    timerParameter: $timerManager.soundManager.soundTrackType,
-                    soundManager: $timerManager.soundManager,
-                    label: "Sound track: ",
-                    action: { value in
-                        //                    print("action!")
-                        //                    print(value)
-                        timerManager.soundManager.soundTrackFullURL = value
-                    }
-                )
-                Spacer()
+            VStack(spacing: 10){
+                Group {
+                    SettingItemInt(
+                        timerParameter: $timerManager.repeatRound,
+                        label: "Total Round Number: ",
+                        range: 1..<61,
+                        action: { value in
+                            print(value)
+                            timerManager.repeatRoundRemaining = Int(value)
+                        })
+                    Divider()
+                }
+                Group {
+                    SettingItemTime(
+                        timerParameter: $timerManager.waitTime,
+                        //                        timerParameterRemaining: $timerManager.waitTimeRemaining,
+                        label: "Initial Wait Time: "){value in
+                            //                            print(value)
+                            timerManager.waitTimeRemaining = Int(value)
+                        }
+                    Divider()
+                    SettingItemTime(
+                        timerParameter: $timerManager.roundTime,
+                        //                        timerParameterRemaining: $timerManager.roundTimeRemaining,
+                        label: "Round Time: "){value in
+                            //                            print(value)
+                            timerManager.roundTimeRemaining = Int(value)
+                        }
+                    Divider()
+                    SettingItemTime(
+                        timerParameter: $timerManager.intervalTime,
+                        //                        timerParameterRemaining: $timerManager.intervalTimeRemaining,
+                        label: "Interval Time: "){value in
+                            //                            print(value)
+                            timerManager.intervalTimeRemaining = Int(value)
+                        }
+                    Divider()
+                }
+                Group{
+                    SettingItemInt(
+                        timerParameter: $timerManager.soundManager.numberOfLoops,
+                        label: "Sound Loop Number: ",
+                        range: 0..<61,
+                        action: {
+                            value in
+                        })
+                    Divider()
+                    SettingSoundTrack(
+                        timerParameter: $timerManager.soundManager.soundTrackType,
+                        soundManager: $timerManager.soundManager,
+                        label: "Sound track: ",
+                        action: { value in
+                            //                    print("action!")
+                            //                    print(value)
+                            timerManager.soundManager.soundTrackFullURL = value
+                        }
+                    )
+                    Spacer()
+                }
+                
                 //            }
                 
             }
@@ -125,37 +148,12 @@ struct SheetView: View {
     }
 }
 
-struct SettingItem: View {
-    @Binding var timerParameter: Int
-    @Binding var timerParameterRemaining: Int
-    @State var label: String
-    //    @State var items: View
-    //TODO: generelaize this
-    
-    var body: some View{
-        HStack{
-            Text(label).foregroundColor(.white)
-            Picker(label, selection: $timerParameter){
-                ForEach(0..<30) { round in
-                    Text(String(round))
-                }
-            }.onChange(of: timerParameter) { value in
-                print(value)
-                //                timerManager.repeatRound = Int(value)
-                timerParameterRemaining = Int(value)
-            }
-            //            .pickerStyle(MenuPickerStyle())
-        }
-        //        .onAppear(){
-        //            roundNumberIndex = timerManager.repeatRound
-        //        }
-    }
-}
 
 struct SettingItemInt: View {
     @Binding var timerParameter: Int
     
     @State var label: String
+    @State var range: Range<Int>
     @State var action: (Int)->Void
     
     var body: some View{
@@ -164,7 +162,7 @@ struct SettingItemInt: View {
                 Text(label)
                 
                 Picker(label, selection: $timerParameter){
-                    ForEach(1..<61) { round in
+                    ForEach(self.range) { round in
                         Text(String(round)).tag(round)
                     }
                 }
@@ -174,7 +172,7 @@ struct SettingItemInt: View {
                 
                 
                 .pickerStyle(.wheel)
-                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.75, alignment: .center)
                 .compositingGroup()
                 .clipped()
             }
@@ -184,54 +182,36 @@ struct SettingItemInt: View {
 
 struct SettingItemTime: View {
     @Binding var timerParameter: Int
-    @Binding var timerParameterRemaining: Int
     @State var label: String
+    @State var action: (Int)->Void
     //    @State var items: View
     //TODO: generelaize this
     
     var body: some View{
-//        HStack{
-//            Text(label).foregroundColor(.white)
-//            Picker(label, selection: $timerParameter){
-//                ForEach(0..<30) { round in
-//                    Text(String(round))
-//                }
-//            }.onChange(of: timerParameter) { value in
-//                print(value)
-//                //                timerManager.repeatRound = Int(value)
-//                timerParameterRemaining = Int(value)
-//            }
-//            //            .pickerStyle(MenuPickerStyle())
-//        }
-        VStack{
+        //        HStack{
+        //            Text(label).foregroundColor(.white)
+        //            Picker(label, selection: $timerParameter){
+        //                ForEach(0..<30) { round in
+        //                    Text(String(round))
+        //                }
+        //            }.onChange(of: timerParameter) { value in
+        //                print(value)
+        //                //                timerManager.repeatRound = Int(value)
+        //                timerParameterRemaining = Int(value)
+        //            }
+        //            //            .pickerStyle(MenuPickerStyle())
+        //        }
+        VStack(spacing: 0   ){
             Text(label)
-            TimePicker()
+            TimePicker(
+                time: $timerParameter,
+                action: self.action
+            )
         }
         
         //        .onAppear(){
         //            roundNumberIndex = timerManager.repeatRound
         //        }
-    }
-}
-
-
-struct SettingTimerItem: View {
-    @Binding var timerParameter: Int
-    @State var label: String
-    //    @State var items: View
-    //TODO: generelaize this
-    
-    var body: some View{
-        HStack{
-            Text(label).foregroundColor(.white)
-            Picker(label, selection: $timerParameter){
-                ForEach(0..<30) { round in
-                    Text(String(round))
-                }
-            }.onChange(of: timerParameter) { value in
-                print(value)
-            }
-        }
     }
 }
 
@@ -243,9 +223,9 @@ struct SettingSoundTrack: View {
     @State var action: (URL)->Void
     
     var body: some View{
-        HStack{
-            Text(label).foregroundColor(.white)
-            //            Text("\(timerParameter)").foregroundColor(.white)
+        VStack{
+            Text(label)
+            //                .foregroundColor(.white)
             Picker(label, selection: $timerParameter){
                 //                Text("Default Ring 1").tag("Default Ring 1")
                 //                Text("Default Ring 2").tag("Default Ring 2")
@@ -255,12 +235,14 @@ struct SettingSoundTrack: View {
                 //                                        .tag(value)
                 //                }
                 ForEach(soundManager.soundTrackMenu, id: \.id){ item in
-                    Text(item.displayName).tag(item.id)
+                    Text(item.displayName)
+                        .tag(item.id)
                 }
                 //                ForEach(0..<30) { round in
                 //                    Text(String(round))
                 //                }
             }
+//            .font(.system(size: 50))
             .onChange(of: timerParameter) { value in
                 //                print(value)
                 if(value == "customized"){

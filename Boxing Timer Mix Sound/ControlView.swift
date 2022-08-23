@@ -20,7 +20,7 @@ struct ControlView: View {
             Spacer()
             
             ClockDisplayView()
-//                .environmentObject(timerManager)
+                .environmentObject(timerManager)
             
             Spacer()
             
@@ -28,7 +28,9 @@ struct ControlView: View {
             
 //            Spacer()
             
-            SettingView().disabled(timerManager.isTiming)
+            SettingView()
+                .environmentObject(timerManager)
+                .disabled(timerManager.isTiming)
             
         }
         .onAppear() {
@@ -153,7 +155,7 @@ struct ClockDisplayView: View{
                 .font(.system(size: 30))
                 .opacity(self.shouldWaitDisappear(by: self.timerManager.waitTimeRemaining))
                 .animation(Animation.easeInOut(duration: 0.5), value: self.shouldWaitDisappear(by: self.timerManager.waitTimeRemaining))
-            Text("wait Time")
+            Text("Warm Up")
                 .foregroundColor(.white)
                 .font(.system(size: 20))
                 .opacity(self.shouldWaitDisappear( by: self.timerManager.waitTimeRemaining))
