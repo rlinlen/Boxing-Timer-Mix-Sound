@@ -29,6 +29,7 @@
 		A05CEEBE28B38249004CB9DF /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		A05CEEC028B382AC004CB9DF /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		A05CEEC228B3BEEE004CB9DF /* bell_ring_b.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = bell_ring_b.m4a; sourceTree = "<group>"; };
+		A0692D7728B64E080012B496 /* Boxing-Timer-Mix-Sound-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Boxing-Timer-Mix-Sound-Info.plist"; sourceTree = SOURCE_ROOT; };
 		A0BC247A28B114B900D79712 /* Boxing Timer Mix Sound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Boxing Timer Mix Sound.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0BC247D28B114B900D79712 /* Boxing_Timer_Mix_SoundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Boxing_Timer_Mix_SoundApp.swift; sourceTree = "<group>"; };
 		A0BC247F28B114B900D79712 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 		A0BC247C28B114B900D79712 /* Boxing Timer Mix Sound */ = {
 			isa = PBXGroup;
 			children = (
+				A0692D7728B64E080012B496 /* Boxing-Timer-Mix-Sound-Info.plist */,
 				A0BC249328B12BA200D79712 /* Sounds */,
 				A0BC247D28B114B900D79712 /* Boxing_Timer_Mix_SoundApp.swift */,
 				A0BC247F28B114B900D79712 /* ContentView.swift */,
@@ -327,6 +329,7 @@
 				DEVELOPMENT_TEAM = 98A22T2NMD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Boxing-Timer-Mix-Sound-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -356,6 +359,7 @@
 				DEVELOPMENT_TEAM = 98A22T2NMD;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Boxing-Timer-Mix-Sound-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

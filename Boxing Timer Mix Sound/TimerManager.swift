@@ -143,6 +143,7 @@ struct SoundTrack: Codable {
     var displayName: String
     var fileName: String
     var url: URL?
+//    var bookMark: Data?
 }
 
 class SoundManager: ObservableObject {
@@ -165,12 +166,18 @@ class SoundManager: ObservableObject {
         }
     }
 //    @Published var soundTrackFullURL: URL
-    
+    @Published var soundTrackCustomizedBookMark: Data? =  (UserDefaults.standard.object(forKey: "soundTrackCustomizedBookMark") as? Data? ?? nil) {
+        didSet {
+            UserDefaults.standard.set(self.soundTrackCustomizedBookMark, forKey: "soundTrackCustomizedBookMark")
+        }
+    }
+        
     @Published var soundTrackMenu: [SoundTrack]
     {
         didSet {
             let encoder = JSONEncoder()
             if let encoded = try? encoder.encode(self.soundTrackMenu) {
+                print("Saving soundTrackMenu: \(encoded)")
                 UserDefaults.standard.set(encoded, forKey: "soundTrackMenu")
             }
 //            UserDefaults.standard.set(, forKey: "soundTrackMenu")
@@ -223,7 +230,26 @@ class SoundManager: ObservableObject {
             if let savedData = try? decoder.decode([SoundTrack].self, from: data) {
                 // Do wantever you want with `savedData`
 //                print(savedData)
+//                for i in savedData.indices {
+//                    if (savedData[i].id == K.Sound.customizedSoundTrackId){
+//                        print("current url: \(savedData[i].url)")
+//                        if (savedData[i].url != nil){
+//                            let url = savedData[i].url!
+//                            if url.startAccessingSecurityScopedResource() {
+//                                print("Yah")
+//                            } else {
+//                                print("QQ")
+//                                // Handle denied access
+//                                currentSoundTrackId = K.Sound.currentSoundTrackId
+//                            }
+//                        }
+//
+//                    }
+//                }
+                
                 soundTrackMenu = savedData
+                
+                
             }
         }
     }
@@ -247,19 +273,50 @@ class SoundManager: ObservableObject {
 //        let path = Bundle.main.path(forResource: name, ofType: nil)
 //        guard let url = Bundle.main.url(forResource: name, withExtension: "mp3") else { return }
         var newUrl = url
+        var isSecuredURL = false
         
         if (newUrl == nil){
             newUrl = self.getSoundTrackURL(from: self.currentSoundTrackId)
-            if (newUrl == nil){
-                newUrl = self.getSoundTrackURL(from: self.soundTrackMenu[0].id)
-                self.currentSoundTrackId = self.soundTrackMenu[0].id
-            }
+//            if (newUrl == nil){
+//                newUrl = self.getSoundTrackURL(from: self.soundTrackMenu[0].id)
+//                self.currentSoundTrackId = self.soundTrackMenu[0].id
+//            }
         }
+        
+        
+        
 //        print("Path: \(path)")
 //        let url = URL(fileURLWithPath: path!)
 //        print("Play URL from name: \(name)")
         
         do {
+            print("init playing: \(newUrl) with \(self.currentSoundTrackId)")
+            if (self.currentSoundTrackId == K.Sound.customizedSoundTrackId){
+                print("init bookmark")
+                print("soundTrackCustomizedBookMark:\(soundTrackCustomizedBookMark!)")
+//                var bookmarkData = self.soundTrackMenu[2].bookMark as! Data
+//                print("bookmarkData: \(bookmarkData)")
+                var bookmarkDataIsStale: Bool = false
+                newUrl = try URL.init(resolvingBookmarkData: soundTrackCustomizedBookMark!, options: [.withoutUI], relativeTo: nil, bookmarkDataIsStale: &bookmarkDataIsStale)
+                print("updated newUrl:\(newUrl)")
+                isSecuredURL = newUrl!.startAccessingSecurityScopedResource()
+                print("isSecuredURL: \(isSecuredURL)")
+//                newUrl?.bookmarkData()
+//                isSecuredURL = newUrl!.startAccessingSecurityScopedResource() == true
+//                print("grant result: \(isSecuredURL)")
+            }
+            defer {
+                print("defered")
+                if(self.currentSoundTrackId == K.Sound.customizedSoundTrackId && isSecuredURL){
+                    print("f defered")
+                    newUrl!.stopAccessingSecurityScopedResource()
+
+                }
+            }
+            print("init isReachable")
+            let isReachable = try newUrl!.checkResourceIsReachable()
+            print("isReachable: \(isReachable)")
+            
             audioPlayer = try AVAudioPlayer(contentsOf: newUrl!)
             audioPlayer?.stop()
             audioPlayer?.volume = self.volume
@@ -267,8 +324,11 @@ class SoundManager: ObservableObject {
             audioPlayer?.play()
             print("Played sound")
         } catch {
-            print("Error playing \(newUrl) sound")
+            print(error.localizedDescription)
+            print("Error playing \(newUrl)")
         }
+        
+        
     }
     
     func stopSound(){

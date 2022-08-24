@@ -215,7 +215,7 @@ struct SettingSoundTrack: View {
     @Binding var soundManager: SoundManager
     @State var label: String
     @State private var isImporting: Bool = false
-//    @State var action: (URL)->Void
+    //    @State var action: (URL)->Void
     
     var body: some View{
         VStack{
@@ -244,7 +244,7 @@ struct SettingSoundTrack: View {
                 if(value == K.Sound.customizedSoundTrackId){
                     isImporting = true
                 }else{
-                    //                    print(value)
+                    //                                        print(value)
                     soundManager.currentSoundTrackId = value
                     //                    for item in soundManager.soundTrackMenu {
                     //                        if (item.id == value) {
@@ -260,16 +260,33 @@ struct SettingSoundTrack: View {
                           allowsMultipleSelection: false){ result in
                 do {
                     guard let selectedFile: URL = try result.get().first else { return }
-                    soundManager.currentSoundTrackId = K.Sound.customizedSoundTrackId
-                    for i in soundManager.soundTrackMenu.indices {
-                        print(soundManager.soundTrackMenu[i].id)
-                        if (soundManager.soundTrackMenu[i].id == K.Sound.customizedSoundTrackId){
-//                            print(selectedFile)
-                            soundManager.soundTrackMenu[i].url = selectedFile
-                        }
-                    }
+                    selectedFile.startAccessingSecurityScopedResource()
+//                    print("setting customized : \(K.Sound.customizedSoundTrackId)")
+//                    if selectedFile.startAccessingSecurityScopedResource() {
+                    self.soundManager.currentSoundTrackId = K.Sound.customizedSoundTrackId
+//                    print(self.soundManager.currentSoundTrackId)
+                    try soundManager.soundTrackCustomizedBookMark = selectedFile.bookmarkData()
+//                    try soundManager.soundTrackCustomizedBookMark = selectedFile.bookmarkData(options: [.suitableForBookmarkFile], includingResourceValuesForKeys: nil, relativeTo: nil)
+                    //                                    selectedFile.bookmarkData()
+//                        for i in soundManager.soundTrackMenu.indices {
+//                            print(soundManager.soundTrackMenu[i].id)
+//                            if (soundManager.soundTrackMenu[i].id == K.Sound.customizedSoundTrackId){
+////                                print(selectedFile)
+//                                soundManager.soundTrackMenu[i].url = selectedFile
+//                                try soundManager.soundTrackMenu[i].bookMark =
+//                                    selectedFile.bookmarkData()
+////                                selectedFile.bookmarkData(
+////                                    options: [.withoutImplicitSecurityScope],
+////                                    includingResourceValuesForKeys: nil,
+////                                    relativeTo: nil)
+//                            }
+//                        }
+//                    } else {
+//                        // Handle denied access
+//                    }
                     
-//                    self.action(selectedFile)
+                    
+                    //                    self.action(selectedFile)
                     //                            print(selectedFile)
                     //                    print(selectedFile.pathExtension)
                     //                    print(selectedFile.deletingPathExtension())
