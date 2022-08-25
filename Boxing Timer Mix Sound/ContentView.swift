@@ -13,10 +13,23 @@ struct ContentView: View {
     
     var body: some View {
         ZStack(){
+            
+            
+            
+//            SwiftUIBannerAd(adPosition: .top, adUnitId: K.Ad.bannerId)
+            
+            
             Color.black.ignoresSafeArea()
             ControlView()
+            
         }
         .onAppear { UIApplication.shared.isIdleTimerDisabled = timerManager.isTiming }
+        
+        BannerVC(size: CGSize(width: UIScreen.main.bounds.width, height: 60),  adUnitId: K.Ad.bannerId)
+                .frame(width: UIScreen.main.bounds.width,
+                       height: 60,
+                       alignment: .center)
+        
     }
 }
 

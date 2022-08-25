@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		303AC662A8A71C411AF3F5DB /* Pods_Boxing_Timer_Mix_Sound.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD270727C63A3C5CD0DA00EA /* Pods_Boxing_Timer_Mix_Sound.framework */; };
 		A028F8A228B7200400E5ED69 /* mixkit-fairy-bells-583.wav in Resources */ = {isa = PBXBuildFile; fileRef = A028F8A028B7200400E5ED69 /* mixkit-fairy-bells-583.wav */; };
 		A028F8A328B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A028F8A128B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a */; };
 		A032004728B46D8500F153DD /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032004628B46D8500F153DD /* TimePicker.swift */; };
 		A04EE35128B4B00600C49C40 /* ExtendString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EE35028B4B00600C49C40 /* ExtendString.swift */; };
 		A04EE35328B4F96600C49C40 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EE35228B4F96600C49C40 /* Constants.swift */; };
+		A051269F28B7669500BEC12D /* BannerAdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A051269E28B7669500BEC12D /* BannerAdVC.swift */; };
 		A05CEEBF28B38249004CB9DF /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CEEBE28B38249004CB9DF /* TimerManager.swift */; };
 		A05CEEC128B382AC004CB9DF /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CEEC028B382AC004CB9DF /* SettingView.swift */; };
 		A05CEEC328B3BEEE004CB9DF /* bell_ring_b.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A05CEEC228B3BEEE004CB9DF /* bell_ring_b.m4a */; };
@@ -24,11 +26,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1AA65AACF44942A3CF015C0E /* Pods-Boxing Timer Mix Sound.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Boxing Timer Mix Sound.release.xcconfig"; path = "Target Support Files/Pods-Boxing Timer Mix Sound/Pods-Boxing Timer Mix Sound.release.xcconfig"; sourceTree = "<group>"; };
+		7DCC52310697FE4766BA19A5 /* Pods-Boxing Timer Mix Sound.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Boxing Timer Mix Sound.debug.xcconfig"; path = "Target Support Files/Pods-Boxing Timer Mix Sound/Pods-Boxing Timer Mix Sound.debug.xcconfig"; sourceTree = "<group>"; };
 		A028F8A028B7200400E5ED69 /* mixkit-fairy-bells-583.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "mixkit-fairy-bells-583.wav"; sourceTree = "<group>"; };
 		A028F8A128B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mixkit-marimba-waiting-ringtone-1360.m4a"; sourceTree = "<group>"; };
 		A032004628B46D8500F153DD /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 		A04EE35028B4B00600C49C40 /* ExtendString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendString.swift; sourceTree = "<group>"; };
 		A04EE35228B4F96600C49C40 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A051269E28B7669500BEC12D /* BannerAdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdVC.swift; sourceTree = "<group>"; };
 		A05CEEBE28B38249004CB9DF /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		A05CEEC028B382AC004CB9DF /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		A05CEEC228B3BEEE004CB9DF /* bell_ring_b.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = bell_ring_b.m4a; sourceTree = "<group>"; };
@@ -41,6 +46,7 @@
 		A0BC248B28B116B300D79712 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		A0BC248E28B12B5500D79712 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
 		A0BC249828B290D600D79712 /* service-bell-ring.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "service-bell-ring.m4a"; sourceTree = "<group>"; };
+		DD270727C63A3C5CD0DA00EA /* Pods_Boxing_Timer_Mix_Sound.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Boxing_Timer_Mix_Sound.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,17 +54,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				303AC662A8A71C411AF3F5DB /* Pods_Boxing_Timer_Mix_Sound.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C3828C306DC3AC5E493A032 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD270727C63A3C5CD0DA00EA /* Pods_Boxing_Timer_Mix_Sound.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		46754B91729032C9D452C2A0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7DCC52310697FE4766BA19A5 /* Pods-Boxing Timer Mix Sound.debug.xcconfig */,
+				1AA65AACF44942A3CF015C0E /* Pods-Boxing Timer Mix Sound.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		A0BC247128B114B900D79712 = {
 			isa = PBXGroup;
 			children = (
 				A0BC247C28B114B900D79712 /* Boxing Timer Mix Sound */,
 				A0BC247B28B114B900D79712 /* Products */,
+				46754B91729032C9D452C2A0 /* Pods */,
+				3C3828C306DC3AC5E493A032 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,6 +107,7 @@
 				A05CEEC028B382AC004CB9DF /* SettingView.swift */,
 				A032004628B46D8500F153DD /* TimePicker.swift */,
 				A05CEEBE28B38249004CB9DF /* TimerManager.swift */,
+				A051269E28B7669500BEC12D /* BannerAdVC.swift */,
 				A04EE35228B4F96600C49C40 /* Constants.swift */,
 				A04EE35028B4B00600C49C40 /* ExtendString.swift */,
 				A0BC248128B114BA00D79712 /* Assets.xcassets */,
@@ -125,9 +152,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A0BC248828B114BA00D79712 /* Build configuration list for PBXNativeTarget "Boxing Timer Mix Sound" */;
 			buildPhases = (
+				E0817809D72D7838E325163C /* [CP] Check Pods Manifest.lock */,
 				A0BC247628B114B900D79712 /* Sources */,
 				A0BC247728B114B900D79712 /* Frameworks */,
 				A0BC247828B114B900D79712 /* Resources */,
+				8F02DE3A56181FA72B13A21E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -187,11 +216,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		8F02DE3A56181FA72B13A21E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Boxing Timer Mix Sound/Pods-Boxing Timer Mix Sound-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Boxing Timer Mix Sound/Pods-Boxing Timer Mix Sound-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Boxing Timer Mix Sound/Pods-Boxing Timer Mix Sound-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E0817809D72D7838E325163C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Boxing Timer Mix Sound-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A0BC247628B114B900D79712 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A051269F28B7669500BEC12D /* BannerAdVC.swift in Sources */,
 				A032004728B46D8500F153DD /* TimePicker.swift in Sources */,
 				A0BC248028B114B900D79712 /* ContentView.swift in Sources */,
 				A05CEEC128B382AC004CB9DF /* SettingView.swift in Sources */,
@@ -324,6 +396,7 @@
 		};
 		A0BC248928B114BA00D79712 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DCC52310697FE4766BA19A5 /* Pods-Boxing Timer Mix Sound.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -332,6 +405,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Boxing Timer Mix Sound/Preview Content\"";
 				DEVELOPMENT_TEAM = 98A22T2NMD;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Boxing-Timer-Mix-Sound-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -354,6 +428,7 @@
 		};
 		A0BC248A28B114BA00D79712 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1AA65AACF44942A3CF015C0E /* Pods-Boxing Timer Mix Sound.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -362,6 +437,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Boxing Timer Mix Sound/Preview Content\"";
 				DEVELOPMENT_TEAM = 98A22T2NMD;
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Boxing-Timer-Mix-Sound-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

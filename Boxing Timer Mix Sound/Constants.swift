@@ -6,6 +6,11 @@
 //
 
 struct K {
+    struct Ad {
+//        static let bannerId: String = "ca-app-pub-4247917994581173/1717378251"
+        //test
+        static let bannerId: String = "ca-app-pub-3940256099942544/2934735716"
+    }
     struct Timer {
         static let roundTime: Int = 180
         static let intervalTime: Int = 30

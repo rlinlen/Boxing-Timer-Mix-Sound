@@ -1,0 +1,6 @@
+framework module Pods_Boxing_Timer_Mix_Sound {
+  umbrella header "Pods-Boxing Timer Mix Sound-umbrella.h"
+
+  export *
+  module * { export * }
+}
