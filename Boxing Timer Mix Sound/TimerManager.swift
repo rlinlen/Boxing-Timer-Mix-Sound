@@ -52,20 +52,8 @@ class TimerManager: ObservableObject {
     var cancellable: Cancellable?
     
     
-    
-    
-    init() {
-//        self.cancellable = self.currentTimePublisher.connect()
-//        print(self.cancellable)
-    }
-    deinit {
-//        self.cancellable?.cancel()
-    }
-    
     func startTimer(){
         self.currentTimePublisher = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-//        print(self.currentTimePublisher)
-//        self.cancellable = self.currentTimePublisher.connect()
         self.isTiming = true
     }
     
@@ -83,8 +71,6 @@ class TimerManager: ObservableObject {
     }
     
     func stopTimer(){
-//        print(timeRemaining)
-//
         self.currentTimePublisher.upstream.connect().cancel()
         self.roundTimeRemaining = self.roundTime
         self.intervalTimeRemaining = self.intervalTime
@@ -92,15 +78,6 @@ class TimerManager: ObservableObject {
         self.waitTimeRemaining = self.waitTime
         self.currentTimerStage = timerStage.Wait
         self.isTiming = false
-//        let secondsToDelay = 2.0
-//        DispatchQueue.main.asyncAfter(deadline: .now() + secondsToDelay) {
-//            self.soundManager.stopSound()
-//        }
-        
-//        print(self.cancellable)
-//        self.cancellable?.cancel()
-//        self.cancellable = nil
-//        print(self.cancellable)
     }
     
     func timesUp(_ stage:TimerManager.timerStage){
@@ -110,18 +87,35 @@ class TimerManager: ObservableObject {
             // ends an interval
             self.repeatRoundRemaining -= 1
             self.currentTimerStage = timerStage.Round
-            self.soundManager.playSound()
+            self.soundManager.playSound(currentSoundTrackId: self.soundManager.currentSoundTrackStartId, customizedBookMark: self.soundManager.soundTrackCustomizedStartBookMark)
             self.roundTimeRemaining = self.roundTime
             
         case .Round:
             if (self.repeatRoundRemaining <= 1){
                 // ends all rounds
-                self.soundManager.playSound()
-                self.stopTimer()
+                do{
+                    if (self.soundManager.isStopBackgroundPlayer){
+                        print("setup stop backgroundplayer")
+                        try self.soundManager.audioSession.setCategory(.soloAmbient, mode: .default, options: [])
+//                        try self.soundManager.audioSession.setActive(true)
+                    }
+                    self.soundManager.playSound(currentSoundTrackId: self.soundManager.currentSoundTrackAllEndId, customizedBookMark: self.soundManager.soundTrackCustomizedAllEndBookMark)
+                    
+                    if (self.soundManager.isStopBackgroundPlayer){
+                        print("restore stop backgroundplayer behaviour")
+                        try self.soundManager.audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
+//                        try self.soundManager.audioSession.setActive(false)
+                    }
+                    self.stopTimer()
+                    
+                }catch{
+                    print(error)
+                }
+                
             } else if (self.repeatRoundRemaining > 1){
                 // ends a usual round
                 self.currentTimerStage = timerStage.Interval
-                self.soundManager.playSound()
+                self.soundManager.playSound(currentSoundTrackId: self.soundManager.currentSoundTrackEndId, customizedBookMark: self.soundManager.soundTrackCustomizedEndBookMark)
     //            self.stopTimer()
 //                self.repeatRoundRemaining -= 1
                 
@@ -130,7 +124,7 @@ class TimerManager: ObservableObject {
         case .Wait:
             // ends a wait
             self.currentTimerStage = timerStage.Round
-            self.soundManager.playSound()
+            self.soundManager.playSound(currentSoundTrackId: self.soundManager.currentSoundTrackStartId, customizedBookMark: self.soundManager.soundTrackCustomizedStartBookMark)
         }
         
     }
@@ -160,15 +154,69 @@ class SoundManager: ObservableObject {
         }
     }
     
-    @Published var currentSoundTrackId: String = (UserDefaults.standard.object(forKey: "currentSoundTrackId") as? String ?? K.Sound.currentSoundTrackId) {
+    @Published var currentSoundTrackStartId: String = (UserDefaults.standard.object(forKey: "currentSoundTrackStartId") as? String ?? K.Sound.currentSoundTrackStartId) {
         didSet {
-            UserDefaults.standard.set(self.currentSoundTrackId, forKey: "currentSoundTrackId")
+            UserDefaults.standard.set(self.currentSoundTrackStartId, forKey: "currentSoundTrackStartId")
         }
     }
-//    @Published var soundTrackFullURL: URL
-    @Published var soundTrackCustomizedBookMark: Data? =  (UserDefaults.standard.object(forKey: "soundTrackCustomizedBookMark") as? Data? ?? nil) {
+    @Published var currentSoundTrackEndId: String = (UserDefaults.standard.object(forKey: "currentSoundTrackEndId") as? String ?? K.Sound.currentSoundTrackEndId) {
         didSet {
-            UserDefaults.standard.set(self.soundTrackCustomizedBookMark, forKey: "soundTrackCustomizedBookMark")
+            UserDefaults.standard.set(self.currentSoundTrackEndId, forKey: "currentSoundTrackEndId")
+        }
+    }
+    @Published var currentSoundTrackAllEndId: String = (UserDefaults.standard.object(forKey: "currentSoundTrackAllEndId") as? String ?? K.Sound.currentSoundTrackAllEndId) {
+        didSet {
+            UserDefaults.standard.set(self.currentSoundTrackAllEndId, forKey: "currentSoundTrackAllEndId")
+        }
+    }
+    @Published var isStopBackgroundPlayer: Bool = (UserDefaults.standard.object(forKey: "isStopBackgroundPlayer") as? Bool ?? K.Sound.isStopBackgroundPlayer) {
+        didSet {
+            UserDefaults.standard.set(self.isStopBackgroundPlayer, forKey: "isStopBackgroundPlayer")
+        }
+    }
+    
+    
+    subscript(_ member: String) -> Any? {
+        get {
+            switch member {
+            case "currentSoundTrackStartId":
+                return soundTrackCustomizedStartBookMark
+            case "currentSoundTrackEndId":
+                return soundTrackCustomizedEndBookMark
+            case "currentSoundTrackAllEndId":
+                return soundTrackCustomizedAllEndBookMark
+            default:
+                return nil
+            }
+        }
+        set {
+            switch member {
+            case "currentSoundTrackStartId":
+                soundTrackCustomizedStartBookMark = newValue as? Data
+            case "currentSoundTrackEndId":
+                soundTrackCustomizedEndBookMark  = newValue as? Data
+            case "currentSoundTrackAllEndId":
+                soundTrackCustomizedAllEndBookMark  = newValue as? Data
+            default:
+                break
+            }
+        }
+            
+        }
+    
+    @Published var soundTrackCustomizedStartBookMark: Data? =  (UserDefaults.standard.object(forKey: "soundTrackCustomizedStartBookMark") as? Data? ?? nil) {
+        didSet {
+            UserDefaults.standard.set(self.soundTrackCustomizedStartBookMark, forKey: "soundTrackCustomizedStartBookMark")
+        }
+    }
+    @Published var soundTrackCustomizedEndBookMark: Data? =  (UserDefaults.standard.object(forKey: "soundTrackCustomizedEndBookMark") as? Data? ?? nil) {
+        didSet {
+            UserDefaults.standard.set(self.soundTrackCustomizedEndBookMark, forKey: "soundTrackCustomizedEndBookMark")
+        }
+    }
+    @Published var soundTrackCustomizedAllEndBookMark: Data? =  (UserDefaults.standard.object(forKey: "soundTrackCustomizedAllEndBookMark") as? Data? ?? nil) {
+        didSet {
+            UserDefaults.standard.set(self.soundTrackCustomizedAllEndBookMark, forKey: "soundTrackCustomizedAllEndBookMark")
         }
     }
         
@@ -180,31 +228,10 @@ class SoundManager: ObservableObject {
                 print("Saving soundTrackMenu: \(encoded)")
                 UserDefaults.standard.set(encoded, forKey: "soundTrackMenu")
             }
-//            UserDefaults.standard.set(, forKey: "soundTrackMenu")
         }
     }
-//    private var _soundTrackFull: URL? = nil
-//    private var _soundTrackExtension: String = ""
-//    private var _soundTrackFullNoExtension: URL? = nil
-//    private var _soundTrackLastNoExtension: String = ""
-//
-//    var soundTrackFullURL: URL? {
-//        get {
-//            return _soundTrackFull;
-//        }
-//        set {
-////            self._soundTrackFull = newValue
-////            self._soundTrackExtension = newValue.pathExtension
-////            self._soundTrackFullNoExtension = newValue.deletingPathExtension()
-////            self._soundTrackLastNoExtension = newValue.deletingPathExtension().lastPathComponent
-//        }
-//    }
     
     init(){
-//        func getSoundTrackURL(name: String = "bell_ring_b", type: String = "m4a") -> URL?{
-//            guard let url = Bundle.main.url(forResource: name, withExtension: type) else { return nil }
-//            return url
-//        }
         func getSoundTrackURL(by fullname: NSString) -> URL?{
             let name = fullname.deletingPathExtension
             let type = fullname.pathExtension
@@ -220,6 +247,8 @@ class SoundManager: ObservableObject {
         do {
             // Set the audio session category, mode, and options.
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
+//            try audioSession.setCategory(.soloAmbient, mode: .default, options: [])
+//            try audioSession.setActive(true)
         } catch {
             print("Failed to set audio session category.")
         }
@@ -228,28 +257,7 @@ class SoundManager: ObservableObject {
         if let data = UserDefaults.standard.object(forKey: "soundTrackMenu") as? Data {
             let decoder = JSONDecoder()
             if let savedData = try? decoder.decode([SoundTrack].self, from: data) {
-                // Do wantever you want with `savedData`
-//                print(savedData)
-//                for i in savedData.indices {
-//                    if (savedData[i].id == K.Sound.customizedSoundTrackId){
-//                        print("current url: \(savedData[i].url)")
-//                        if (savedData[i].url != nil){
-//                            let url = savedData[i].url!
-//                            if url.startAccessingSecurityScopedResource() {
-//                                print("Yah")
-//                            } else {
-//                                print("QQ")
-//                                // Handle denied access
-//                                currentSoundTrackId = K.Sound.currentSoundTrackId
-//                            }
-//                        }
-//
-//                    }
-//                }
-                
                 soundTrackMenu = savedData
-                
-                
             }
         }
     }
@@ -269,35 +277,25 @@ class SoundManager: ObservableObject {
         return soundTrackMenu[0].url
     }
     
-    func playSound(url: URL? = nil){
-//        let path = Bundle.main.path(forResource: name, ofType: nil)
-//        guard let url = Bundle.main.url(forResource: name, withExtension: "mp3") else { return }
-        var newUrl = url
+    func playSound(currentSoundTrackId: String, customizedBookMark: Data? = nil){
+        var newUrl: URL?
         var isSecuredURL = false
         
         if (newUrl == nil){
-            newUrl = self.getSoundTrackURL(from: self.currentSoundTrackId)
-//            if (newUrl == nil){
-//                newUrl = self.getSoundTrackURL(from: self.soundTrackMenu[0].id)
-//                self.currentSoundTrackId = self.soundTrackMenu[0].id
-//            }
+            newUrl = self.getSoundTrackURL(from: currentSoundTrackId)
         }
         
         
         
-//        print("Path: \(path)")
-//        let url = URL(fileURLWithPath: path!)
-//        print("Play URL from name: \(name)")
-        
         do {
-            print("init playing: \(newUrl) with \(self.currentSoundTrackId)")
-            if (self.currentSoundTrackId == K.Sound.customizedSoundTrackId){
+            print("init playing: \(newUrl) with \(self.currentSoundTrackStartId)")
+            if (currentSoundTrackId == K.Sound.customizedSoundTrackId){
                 print("init bookmark")
-                print("soundTrackCustomizedBookMark:\(soundTrackCustomizedBookMark!)")
+                print("soundTrackCustomizedBookMark:\(customizedBookMark)")
 //                var bookmarkData = self.soundTrackMenu[2].bookMark as! Data
 //                print("bookmarkData: \(bookmarkData)")
                 var bookmarkDataIsStale: Bool = false
-                newUrl = try URL.init(resolvingBookmarkData: soundTrackCustomizedBookMark!, options: [.withoutUI], relativeTo: nil, bookmarkDataIsStale: &bookmarkDataIsStale)
+                newUrl = try URL.init(resolvingBookmarkData: customizedBookMark!, options: [.withoutUI], relativeTo: nil, bookmarkDataIsStale: &bookmarkDataIsStale)
                 print("updated newUrl:\(newUrl)")
                 isSecuredURL = newUrl!.startAccessingSecurityScopedResource()
                 print("isSecuredURL: \(isSecuredURL)")
@@ -307,7 +305,7 @@ class SoundManager: ObservableObject {
             }
             defer {
                 print("defered")
-                if(self.currentSoundTrackId == K.Sound.customizedSoundTrackId && isSecuredURL){
+                if(currentSoundTrackId == K.Sound.customizedSoundTrackId && isSecuredURL){
                     print("f defered")
                     newUrl!.stopAccessingSecurityScopedResource()
 

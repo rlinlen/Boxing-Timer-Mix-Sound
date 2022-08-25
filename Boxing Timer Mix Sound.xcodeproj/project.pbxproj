@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A028F8A228B7200400E5ED69 /* mixkit-fairy-bells-583.wav in Resources */ = {isa = PBXBuildFile; fileRef = A028F8A028B7200400E5ED69 /* mixkit-fairy-bells-583.wav */; };
+		A028F8A328B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A028F8A128B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a */; };
 		A032004728B46D8500F153DD /* TimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032004628B46D8500F153DD /* TimePicker.swift */; };
 		A04EE35128B4B00600C49C40 /* ExtendString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EE35028B4B00600C49C40 /* ExtendString.swift */; };
 		A04EE35328B4F96600C49C40 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EE35228B4F96600C49C40 /* Constants.swift */; };
@@ -18,11 +20,12 @@
 		A0BC248228B114BA00D79712 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0BC248128B114BA00D79712 /* Assets.xcassets */; };
 		A0BC248528B114BA00D79712 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0BC248428B114BA00D79712 /* Preview Assets.xcassets */; };
 		A0BC248C28B116B300D79712 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC248B28B116B300D79712 /* ControlView.swift */; };
-		A0BC249528B12BA200D79712 /* service-bell-ring-14610.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A0BC249428B12BA200D79712 /* service-bell-ring-14610.mp3 */; };
 		A0BC249928B290D600D79712 /* service-bell-ring.m4a in Resources */ = {isa = PBXBuildFile; fileRef = A0BC249828B290D600D79712 /* service-bell-ring.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A028F8A028B7200400E5ED69 /* mixkit-fairy-bells-583.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "mixkit-fairy-bells-583.wav"; sourceTree = "<group>"; };
+		A028F8A128B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "mixkit-marimba-waiting-ringtone-1360.m4a"; sourceTree = "<group>"; };
 		A032004628B46D8500F153DD /* TimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePicker.swift; sourceTree = "<group>"; };
 		A04EE35028B4B00600C49C40 /* ExtendString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendString.swift; sourceTree = "<group>"; };
 		A04EE35228B4F96600C49C40 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -37,7 +40,6 @@
 		A0BC248428B114BA00D79712 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A0BC248B28B116B300D79712 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		A0BC248E28B12B5500D79712 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
-		A0BC249428B12BA200D79712 /* service-bell-ring-14610.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "service-bell-ring-14610.mp3"; sourceTree = "<group>"; };
 		A0BC249828B290D600D79712 /* service-bell-ring.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "service-bell-ring.m4a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,8 +111,9 @@
 			isa = PBXGroup;
 			children = (
 				A0BC249828B290D600D79712 /* service-bell-ring.m4a */,
+				A028F8A028B7200400E5ED69 /* mixkit-fairy-bells-583.wav */,
+				A028F8A128B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a */,
 				A05CEEC228B3BEEE004CB9DF /* bell_ring_b.m4a */,
-				A0BC249428B12BA200D79712 /* service-bell-ring-14610.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -173,10 +176,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0BC249528B12BA200D79712 /* service-bell-ring-14610.mp3 in Resources */,
+				A028F8A328B7200400E5ED69 /* mixkit-marimba-waiting-ringtone-1360.m4a in Resources */,
 				A0BC248528B114BA00D79712 /* Preview Assets.xcassets in Resources */,
 				A0BC248228B114BA00D79712 /* Assets.xcassets in Resources */,
 				A05CEEC328B3BEEE004CB9DF /* bell_ring_b.m4a in Resources */,
+				A028F8A228B7200400E5ED69 /* mixkit-fairy-bells-583.wav in Resources */,
 				A0BC249928B290D600D79712 /* service-bell-ring.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

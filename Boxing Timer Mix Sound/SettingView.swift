@@ -37,7 +37,8 @@ struct SettingsGrid: View{
     @State var roundNumberIndex: Int = 0
     
     
-    var gridItemLayout = [GridItem(.adaptive(minimum: 150, maximum: 300), spacing: 25)]
+//    var gridItemLayout = [GridItem(.adaptive(minimum: 150, maximum: 300), spacing: 25)]
+    var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View{
         NavigationView {
@@ -88,11 +89,34 @@ struct SettingsGrid: View{
                             value in
                         })
                     Divider()
-                    SettingSoundTrack(
-                        timerParameter: $timerManager.soundManager.currentSoundTrackId,
-                        soundManager: $timerManager.soundManager,
-                        label: "Sound track: "
+                    SettingItemToggle(
+                        timerParameter: $timerManager.soundManager.isStopBackgroundPlayer,
+                        label: "Stop Background Music when Finish: "
                     )
+                    
+                    Divider()
+                    Text("Sound Track")
+                    LazyVGrid(columns: gridItemLayout, spacing: 0) {
+                        SettingSoundTrackItem(
+                            timerParameter: $timerManager.soundManager.currentSoundTrackStartId,
+                            soundManager: $timerManager.soundManager,
+                            soundTrackKey: "currentSoundTrackStartId",
+                            label: "Start Bell: "
+                        )
+                        SettingSoundTrackItem(
+                            timerParameter: $timerManager.soundManager.currentSoundTrackEndId,
+                            soundManager: $timerManager.soundManager,
+                            soundTrackKey: "currentSoundTrackEndId",
+                            label: "End Bell: "
+                        )
+                        SettingSoundTrackItem(
+                            timerParameter: $timerManager.soundManager.currentSoundTrackAllEndId,
+                            soundManager: $timerManager.soundManager,
+                            soundTrackKey: "currentSoundTrackAllEndId",
+                            label: "Finish Bell: "
+                        )
+                    }
+                    
                     Spacer()
                 }
                 
@@ -175,6 +199,20 @@ struct SettingItemInt: View {
     }
 }
 
+
+struct SettingItemToggle: View {
+    @Binding var timerParameter: Bool
+    
+    @State var label: String
+    
+    var body: some View{
+        Toggle(isOn: $timerParameter){
+            Text(label)
+        }
+        .padding(.leading, 26)
+    }
+}
+
 struct SettingItemTime: View {
     @Binding var timerParameter: Int
     @State var label: String
@@ -183,19 +221,6 @@ struct SettingItemTime: View {
     //TODO: generelaize this
     
     var body: some View{
-        //        HStack{
-        //            Text(label).foregroundColor(.white)
-        //            Picker(label, selection: $timerParameter){
-        //                ForEach(0..<30) { round in
-        //                    Text(String(round))
-        //                }
-        //            }.onChange(of: timerParameter) { value in
-        //                print(value)
-        //                //                timerManager.repeatRound = Int(value)
-        //                timerParameterRemaining = Int(value)
-        //            }
-        //            //            .pickerStyle(MenuPickerStyle())
-        //        }
         VStack(spacing: 0   ){
             Text(label)
             TimePicker(
@@ -210,11 +235,14 @@ struct SettingItemTime: View {
     }
 }
 
-struct SettingSoundTrack: View {
+struct SettingSoundTrackItem: View {
     @Binding var timerParameter: String
     @Binding var soundManager: SoundManager
+
+    @State var soundTrackKey: String
     @State var label: String
     @State private var isImporting: Bool = false
+    
     //    @State var action: (URL)->Void
     
     var body: some View{
@@ -222,20 +250,10 @@ struct SettingSoundTrack: View {
             Text(label)
             //                .foregroundColor(.white)
             Picker(label, selection: $timerParameter){
-                //                Text("Default Ring 1").tag("Default Ring 1")
-                //                Text("Default Ring 2").tag("Default Ring 2")
-                //                Text("Customized").tag("Customized")
-                //                ForEach(SoundManager.soundTrackMenu.allCases, id: \.rawValue) { value in
-                //                    Text(value.rawValue)
-                //                                        .tag(value)
-                //                }
                 ForEach(soundManager.soundTrackMenu, id: \.id){ item in
                     Text(item.displayName)
                         .tag(item.id)
                 }
-                //                ForEach(0..<30) { round in
-                //                    Text(String(round))
-                //                }
             }
             //            .font(.system(size: 50))
             .onChange(of: timerParameter) { value in
@@ -244,14 +262,7 @@ struct SettingSoundTrack: View {
                 if(value == K.Sound.customizedSoundTrackId){
                     isImporting = true
                 }else{
-                    //                                        print(value)
-                    soundManager.currentSoundTrackId = value
-                    //                    for item in soundManager.soundTrackMenu {
-                    //                        if (item.id == value) {
-                    //                            print(item.fileName)
-                    //                            soundManager.soundTrackFullURL = soundManager.getSoundTrackURL(by: item.fileName as NSString)!
-                    //                        }
-                    //                    }
+                    timerParameter = value
                 }
                 
             }
@@ -260,38 +271,18 @@ struct SettingSoundTrack: View {
                           allowsMultipleSelection: false){ result in
                 do {
                     guard let selectedFile: URL = try result.get().first else { return }
-                    selectedFile.startAccessingSecurityScopedResource()
-//                    print("setting customized : \(K.Sound.customizedSoundTrackId)")
-//                    if selectedFile.startAccessingSecurityScopedResource() {
-                    self.soundManager.currentSoundTrackId = K.Sound.customizedSoundTrackId
-//                    print(self.soundManager.currentSoundTrackId)
-                    try soundManager.soundTrackCustomizedBookMark = selectedFile.bookmarkData()
-//                    try soundManager.soundTrackCustomizedBookMark = selectedFile.bookmarkData(options: [.suitableForBookmarkFile], includingResourceValuesForKeys: nil, relativeTo: nil)
-                    //                                    selectedFile.bookmarkData()
-//                        for i in soundManager.soundTrackMenu.indices {
-//                            print(soundManager.soundTrackMenu[i].id)
-//                            if (soundManager.soundTrackMenu[i].id == K.Sound.customizedSoundTrackId){
-////                                print(selectedFile)
-//                                soundManager.soundTrackMenu[i].url = selectedFile
-//                                try soundManager.soundTrackMenu[i].bookMark =
-//                                    selectedFile.bookmarkData()
-////                                selectedFile.bookmarkData(
-////                                    options: [.withoutImplicitSecurityScope],
-////                                    includingResourceValuesForKeys: nil,
-////                                    relativeTo: nil)
-//                            }
-//                        }
-//                    } else {
-//                        // Handle denied access
-//                    }
-                    
-                    
-                    //                    self.action(selectedFile)
-                    //                            print(selectedFile)
-                    //                    print(selectedFile.pathExtension)
-                    //                    print(selectedFile.deletingPathExtension())
-                    //                    print(selectedFile.deletingPathExtension().lastPathComponent)
-                    
+                    let result = selectedFile.startAccessingSecurityScopedResource()
+                    defer {
+                        if (result){
+                            selectedFile.stopAccessingSecurityScopedResource()
+                        }
+                    }
+                    timerParameter = K.Sound.customizedSoundTrackId
+                    try soundManager[self.soundTrackKey] = selectedFile.bookmarkData()
+                    print("bookmarkData saved to : \(self.soundTrackKey)")
+                    soundManager.playSound(
+                        currentSoundTrackId: timerParameter,
+                        customizedBookMark: soundManager[self.soundTrackKey] as? Data)
                 } catch {
                     // Handle failure.
                     print("Unable to read file contents")

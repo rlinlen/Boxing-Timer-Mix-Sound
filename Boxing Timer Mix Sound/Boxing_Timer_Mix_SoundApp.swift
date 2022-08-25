@@ -20,6 +20,5 @@ struct Boxing_Timer_Mix_SoundApp: App {
     }
 }
 
-//TODO: save settings
 //TODO: customzed ending sound behaviour
 //TODO: add more music
