@@ -35,7 +35,7 @@ struct SettingsGrid: View{
     @Binding var showSheetView: Bool
     
     @State var roundNumberIndex: Int = 0
-    
+    @State var showHelperView: Bool = false
     
 //    var gridItemLayout = [GridItem(.adaptive(minimum: 150, maximum: 300), spacing: 25)]
     var gridItemLayout = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
@@ -128,7 +128,22 @@ struct SettingsGrid: View{
             //            .background(Color.teal.ignoresSafeArea(.all, edges: .all))
             //        .disabled(timerManager.isTiming)
             .navigationBarTitle(Text("Settings"), displayMode: .inline)
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(
+                leading: Button(action:{
+                    print("?")
+                    showHelperView.toggle()
+                }){
+                    Image(systemName: "questionmark.circle")
+                        .font(.system(size: 20))
+//                        .foregroundColor(.white)
+//                        .buttonStyle(PlainButtonStyle())
+                }
+                    .sheet(isPresented: $showHelperView) {
+                        HelperView()
+                    }
+                ,
+                
+                trailing: Button(action: {
                 //                    print("Dismissing sheet view...")
                 self.showSheetView = false
             }) {
@@ -166,6 +181,9 @@ struct SheetView: View {
         .pickerStyle(WheelPickerStyle())
     }
 }
+
+
+
 
 
 struct SettingItemInt: View {

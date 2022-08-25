@@ -32,7 +32,11 @@ class TimerManager: ObservableObject {
             UserDefaults.standard.set(self.repeatRound, forKey: "repeatRound")
         }
     }
-    @Published var isTiming: Bool = true
+    @Published var isTiming: Bool = true {
+        didSet {
+            UIApplication.shared.isIdleTimerDisabled = self.isTiming
+        }
+    }
     
     @Published var roundTimeRemaining: Int = 999
     @Published var intervalTimeRemaining: Int = 999

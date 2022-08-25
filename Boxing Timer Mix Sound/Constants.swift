@@ -7,7 +7,7 @@
 
 struct K {
     struct Ad {
-//        static let bannerId: String = "ca-app-pub-4247917994581173/1717378251"
+        //        static let bannerId: String = "ca-app-pub-4247917994581173/1717378251"
         //test
         static let bannerId: String = "ca-app-pub-3940256099942544/2934735716"
     }
@@ -50,5 +50,45 @@ struct K {
                       )
         ]
     }
-    
+    struct Helper{
+        static let useCase: [UseCase] = [
+            UseCase(
+                title: "Boxing",
+                subTitle: "A Very Loud Timer which can catch your attention",
+                content: """
+                Set the 'Total Round Number' to 3
+                Set the 'Round Time' to 3 minutes
+                Set the 'Interval Time' to 1 minutes
+                Slide the 'Sound Volume' to 5
+                Enable 'Stop Background Music when Finish'
+                Start!
+                """,
+                icon: "b.square.fill"
+            ),
+            UseCase(
+                title: "Workout",
+                subTitle: "Play Background Music with Timer",
+                content: """
+                Choose any music player and put them into background
+                Disable 'Stop Background Music when Finish'
+                Start!
+                """,
+                icon: "deskclock"
+            ),
+            UseCase(
+                title: "Sleep",
+                subTitle: "Stop background music after an hour",
+                content: """
+                Choose any music player and put them into background
+                Set the 'Total Round Number' to 1
+                Set the 'Round Time' to 60 minutes
+                Enable 'Stop Background Music when Finish'
+                Slide the 'Sound Volume' to 0
+                Start!
+                The screen will stay on while playing, while it will go to lock mode while not playing.
+                """,
+                icon: "powersleep"
+            )
+        ]
+    }
 }

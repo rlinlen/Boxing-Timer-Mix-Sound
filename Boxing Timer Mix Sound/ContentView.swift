@@ -23,7 +23,7 @@ struct ContentView: View {
             ControlView()
             
         }
-        .onAppear { UIApplication.shared.isIdleTimerDisabled = timerManager.isTiming }
+//        .onAppear { UIApplication.shared.isIdleTimerDisabled = timerManager.isTiming }
         
         BannerVC(size: CGSize(width: UIScreen.main.bounds.width, height: 60),  adUnitId: K.Ad.bannerId)
                 .frame(width: UIScreen.main.bounds.width,
