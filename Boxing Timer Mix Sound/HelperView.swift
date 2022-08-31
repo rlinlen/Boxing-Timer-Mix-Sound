@@ -22,21 +22,26 @@ struct CardView: View {
         VStack{
             HStack{
                 Image(systemName: useCase.icon)
+                    .foregroundColor(.white)
                 Text(useCase.title)
                     .font(.title)
+                    .foregroundColor(.white)
             }
             Text(useCase.subTitle)
                 .font(.title2)
                 .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.center)
+                .foregroundColor(.white)
             Divider()
             Text(useCase.content)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(10)
+                .foregroundColor(.white)
             
         }
         .background(
                 Rectangle()
-                    .fill(Color.white)
+                    .fill(Color.black)
                     .cornerRadius(12)
                     .shadow(
                         color: Color.gray.opacity(0.7),
@@ -54,15 +59,24 @@ struct CardView: View {
 }
 
 struct HelperView: View {
-    //
-    enum Flavor: String, CaseIterable, Identifiable {
-        case chocolate, vanilla, strawberry
-        var id: Self { self }
-    }
     
-    @State private var selectedFlavor: Flavor = .chocolate
+    @Binding var isDisplay: Bool
     
     var body: some View {
+        HStack{
+            Spacer()
+            Button(action: {
+                isDisplay.toggle()
+            }){
+                Text("Done")
+                    .bold()
+                    .padding(20)
+                    
+                
+            }
+        }
+        
+        
         List{
             ForEach(K.Helper.useCase){ useCase in
                 CardView(useCase: useCase)

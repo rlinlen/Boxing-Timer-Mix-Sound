@@ -6,21 +6,18 @@
 //
 
 import SwiftUI
-//import AppTrackingTransparency
-//import GoogleMobileAds
+import AppTrackingTransparency
+import GoogleMobileAds
+import AdSupport
 
 @main
 struct Boxing_Timer_Mix_SoundApp: App {
     @StateObject var timerManager: TimerManager = TimerManager()
     
     //Use init() in place of ApplicationDidFinishLaunchWithOptions in App Delegate
-//    init() {
-//        ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
-//            // Tracking authorization completed. Start loading ads here.
-//            // loadAd()
-//            GADMobileAds.sharedInstance().start(completionHandler: nil)
-//          })
-//    }
+    init() {
+        
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -28,7 +25,9 @@ struct Boxing_Timer_Mix_SoundApp: App {
                 .environmentObject(timerManager)
         }
     }
+    
 }
 
-//TODO: customzed ending sound behaviour
+//TODO: Add background play
+//TODO: Fix Rotate auto play bug
 //TODO: add more music

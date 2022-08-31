@@ -99,14 +99,14 @@ class TimerManager: ObservableObject {
                 // ends all rounds
                 do{
                     if (self.soundManager.isStopBackgroundPlayer){
-                        print("setup stop backgroundplayer")
+//                        print("setup stop backgroundplayer")
                         try self.soundManager.audioSession.setCategory(.soloAmbient, mode: .default, options: [])
 //                        try self.soundManager.audioSession.setActive(true)
                     }
                     self.soundManager.playSound(currentSoundTrackId: self.soundManager.currentSoundTrackAllEndId, customizedBookMark: self.soundManager.soundTrackCustomizedAllEndBookMark)
                     
                     if (self.soundManager.isStopBackgroundPlayer){
-                        print("restore stop backgroundplayer behaviour")
+//                        print("restore stop backgroundplayer behaviour")
                         try self.soundManager.audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
 //                        try self.soundManager.audioSession.setActive(false)
                     }
@@ -229,7 +229,7 @@ class SoundManager: ObservableObject {
         didSet {
             let encoder = JSONEncoder()
             if let encoded = try? encoder.encode(self.soundTrackMenu) {
-                print("Saving soundTrackMenu: \(encoded)")
+//                print("Saving soundTrackMenu: \(encoded)")
                 UserDefaults.standard.set(encoded, forKey: "soundTrackMenu")
             }
         }
@@ -292,9 +292,9 @@ class SoundManager: ObservableObject {
         
         
         do {
-            print("init playing: \(newUrl) with \(self.currentSoundTrackStartId)")
+//            print("init playing: \(newUrl) with \(self.currentSoundTrackStartId)")
             if (currentSoundTrackId == K.Sound.customizedSoundTrackId){
-                print("init bookmark")
+//                print("init bookmark")
                 print("soundTrackCustomizedBookMark:\(customizedBookMark)")
 //                var bookmarkData = self.soundTrackMenu[2].bookMark as! Data
 //                print("bookmarkData: \(bookmarkData)")
@@ -302,22 +302,18 @@ class SoundManager: ObservableObject {
                 newUrl = try URL.init(resolvingBookmarkData: customizedBookMark!, options: [.withoutUI], relativeTo: nil, bookmarkDataIsStale: &bookmarkDataIsStale)
                 print("updated newUrl:\(newUrl)")
                 isSecuredURL = newUrl!.startAccessingSecurityScopedResource()
-                print("isSecuredURL: \(isSecuredURL)")
+//                print("isSecuredURL: \(isSecuredURL)")
 //                newUrl?.bookmarkData()
 //                isSecuredURL = newUrl!.startAccessingSecurityScopedResource() == true
 //                print("grant result: \(isSecuredURL)")
             }
             defer {
-                print("defered")
                 if(currentSoundTrackId == K.Sound.customizedSoundTrackId && isSecuredURL){
-                    print("f defered")
                     newUrl!.stopAccessingSecurityScopedResource()
 
                 }
             }
-            print("init isReachable")
             let isReachable = try newUrl!.checkResourceIsReachable()
-            print("isReachable: \(isReachable)")
             
             audioPlayer = try AVAudioPlayer(contentsOf: newUrl!)
             audioPlayer?.stop()

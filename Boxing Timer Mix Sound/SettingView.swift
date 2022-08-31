@@ -19,7 +19,7 @@ struct SettingView: View{
             }
             .sheet(isPresented: $isShowingSettingSheet) {
                 SettingsGrid(showSheetView: self.$isShowingSettingSheet)
-                //                    .environmentObject(timerManager)
+                                    .environmentObject(timerManager)
             }
             //                .foregroundColor(.white)
             //            SettingsGrid()
@@ -130,7 +130,6 @@ struct SettingsGrid: View{
             .navigationBarTitle(Text("Settings"), displayMode: .inline)
             .navigationBarItems(
                 leading: Button(action:{
-                    print("?")
                     showHelperView.toggle()
                 }){
                     Image(systemName: "questionmark.circle")
@@ -139,13 +138,13 @@ struct SettingsGrid: View{
 //                        .buttonStyle(PlainButtonStyle())
                 }
                     .sheet(isPresented: $showHelperView) {
-                        HelperView()
+                        HelperView(isDisplay: $showHelperView)
                     }
                 ,
                 
                 trailing: Button(action: {
-                //                    print("Dismissing sheet view...")
                 self.showSheetView = false
+                    self.timerManager.soundManager.stopSound()
             }) {
                 Text("Done").bold()
             })
@@ -198,20 +197,39 @@ struct SettingItemInt: View {
             VStack(spacing: 0){
                 Text(label)
                 
-                Picker(label, selection: $timerParameter){
-                    ForEach(self.range) { round in
-                        Text(String(round)).tag(round)
+                if #available(iOS 14, *){
+                    Picker(label, selection: $timerParameter){
+                        ForEach(self.range, id: \.self) { round in
+                            Text(String(round)).tag(round)
+                        }
+//                        Text("1").tag(1)
+//                                    Text("2").tag(2)
+//                                    Text("3").tag(3)
                     }
-                }
-                .onChange(of: timerParameter) { value in
-                    self.action(value)
+                    .onChange(of: timerParameter) { value in
+    //                    print(value)
+                        self.action(value)
+                    }
+                    .pickerStyle(WheelPickerStyle())
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.75, alignment: .center)
+                    .compositingGroup()
+                    .clipped()
+                } else {
+                    Picker(label, selection: $timerParameter){
+                        ForEach(self.range) { round in
+                            Text(String(round)).tag(round)
+                        }
+                    }
+                    .onChange(of: timerParameter) { value in
+    //                    print(value)
+                        self.action(value)
+                    }
+                    .pickerStyle(.wheel)
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.75, alignment: .center)
+                    .compositingGroup()
+                    .clipped()
                 }
                 
-                
-                .pickerStyle(.wheel)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.75, alignment: .center)
-                .compositingGroup()
-                .clipped()
             }
         }
     }
@@ -261,52 +279,107 @@ struct SettingSoundTrackItem: View {
     @State var label: String
     @State private var isImporting: Bool = false
     
+    func getLabel(by id: String) -> String {
+        for soundTrack in soundManager.soundTrackMenu {
+            if soundTrack.id == id {
+                return soundTrack.displayName
+            }
+        }
+        return soundManager.soundTrackMenu[0].displayName
+    }
     //    @State var action: (URL)->Void
     
     var body: some View{
         VStack{
             Text(label)
             //                .foregroundColor(.white)
-            Picker(label, selection: $timerParameter){
-                ForEach(soundManager.soundTrackMenu, id: \.id){ item in
-                    Text(item.displayName)
-                        .tag(item.id)
-                }
-            }
-            //            .font(.system(size: 50))
-            .onChange(of: timerParameter) { value in
-                print(value)
-                
-                if(value == K.Sound.customizedSoundTrackId){
-                    isImporting = true
-                }else{
-                    timerParameter = value
-                }
-                
-            }
-            .fileImporter(isPresented: $isImporting,
-                          allowedContentTypes: [.audio],
-                          allowsMultipleSelection: false){ result in
-                do {
-                    guard let selectedFile: URL = try result.get().first else { return }
-                    let result = selectedFile.startAccessingSecurityScopedResource()
-                    defer {
-                        if (result){
-                            selectedFile.stopAccessingSecurityScopedResource()
-                        }
+            if #available(iOS 14, *) {
+                Picker(selection: $timerParameter, label: Text(getLabel(by: timerParameter))){
+                    ForEach(soundManager.soundTrackMenu, id: \.id){ item in
+                        Text(item.displayName)
+                            .tag(item.id)
                     }
-                    timerParameter = K.Sound.customizedSoundTrackId
-                    try soundManager[self.soundTrackKey] = selectedFile.bookmarkData()
-                    print("bookmarkData saved to : \(self.soundTrackKey)")
-                    soundManager.playSound(
-                        currentSoundTrackId: timerParameter,
-                        customizedBookMark: soundManager[self.soundTrackKey] as? Data)
-                } catch {
-                    // Handle failure.
-                    print("Unable to read file contents")
-                    print(error.localizedDescription)
+                }
+                .pickerStyle(MenuPickerStyle())
+                .onChange(of: timerParameter) { value in
+                    print(value)
+                    
+                    if(value == K.Sound.customizedSoundTrackId){
+                        isImporting = true
+                    }else{
+                        timerParameter = value
+                        soundManager.playSound(currentSoundTrackId: timerParameter)
+                    }
+                    
+                }
+                .fileImporter(isPresented: $isImporting,
+                              allowedContentTypes: [.audio],
+                              allowsMultipleSelection: false){ result in
+                    do {
+                        guard let selectedFile: URL = try result.get().first else { return }
+                        let result = selectedFile.startAccessingSecurityScopedResource()
+                        defer {
+                            if (result){
+                                selectedFile.stopAccessingSecurityScopedResource()
+                            }
+                        }
+                        timerParameter = K.Sound.customizedSoundTrackId
+                        try soundManager[self.soundTrackKey] = selectedFile.bookmarkData()
+    //                    print("bookmarkData saved to : \(self.soundTrackKey)")
+                        soundManager.playSound(
+                            currentSoundTrackId: timerParameter,
+                            customizedBookMark: soundManager[self.soundTrackKey] as? Data)
+                    } catch {
+                        // Handle failure.
+                        print("Unable to read file contents")
+                        print(error.localizedDescription)
+                    }
+                }
+            } else {
+                
+                
+                Picker(label, selection: $timerParameter){
+                    ForEach(soundManager.soundTrackMenu, id: \.id){ item in
+                        Text(item.displayName)
+                            .tag(item.id)
+                    }
+                }
+                .onChange(of: timerParameter) { value in
+                    print(value)
+                    
+                    if(value == K.Sound.customizedSoundTrackId){
+                        isImporting = true
+                    }else{
+                        timerParameter = value
+                        soundManager.playSound(currentSoundTrackId: timerParameter)
+                    }
+                    
+                }
+                .fileImporter(isPresented: $isImporting,
+                              allowedContentTypes: [.audio],
+                              allowsMultipleSelection: false){ result in
+                    do {
+                        guard let selectedFile: URL = try result.get().first else { return }
+                        let result = selectedFile.startAccessingSecurityScopedResource()
+                        defer {
+                            if (result){
+                                selectedFile.stopAccessingSecurityScopedResource()
+                            }
+                        }
+                        timerParameter = K.Sound.customizedSoundTrackId
+                        try soundManager[self.soundTrackKey] = selectedFile.bookmarkData()
+    //                    print("bookmarkData saved to : \(self.soundTrackKey)")
+                        soundManager.playSound(
+                            currentSoundTrackId: timerParameter,
+                            customizedBookMark: soundManager[self.soundTrackKey] as? Data)
+                    } catch {
+                        // Handle failure.
+                        print("Unable to read file contents")
+                        print(error.localizedDescription)
+                    }
                 }
             }
+            
         }
     }
 }

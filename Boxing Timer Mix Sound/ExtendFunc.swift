@@ -46,3 +46,14 @@ private extension String {
     index(startIndex, offsetBy: offset)
   }
 }
+
+
+
+//https://stackoverflow.com/questions/26913799/remove-println-for-release-version-ios-swift
+func print(_ items: Any..., separator: String = " ", terminator: String = "\n") {
+    #if DEBUG
+    items.forEach {
+        Swift.print($0, separator: separator, terminator: terminator)
+    }
+    #endif
+}

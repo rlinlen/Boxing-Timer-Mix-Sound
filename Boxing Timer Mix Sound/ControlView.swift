@@ -14,23 +14,36 @@ struct ControlView: View {
     //    @StateObject var timerManager: TimerManager = TimerManager()
     @EnvironmentObject var timerManager: TimerManager
     
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
     var body: some View {
         VStack {
             
             Spacer()
             
+            if verticalSizeClass != .compact {
             ClockDisplayView()
                 .environmentObject(timerManager)
+            } else {
+                ClockDisplayView()
+                    .padding(.top, 50)
+                    .environmentObject(timerManager)
+            }
+            
+            
+            
             
             Spacer()
             
-            PlayBarView()
-            
-            //            Spacer()
-            
-            SettingView()
-                .environmentObject(timerManager)
-                .disabled(timerManager.isTiming)
+            if verticalSizeClass != .compact {
+                PlayBarView()
+                
+                //            Spacer()
+                
+                SettingView()
+                    .environmentObject(timerManager)
+                    .disabled(timerManager.isTiming)
+            }
             
         }
         .onAppear() {
@@ -60,17 +73,6 @@ struct ClockDisplayView: View{
     //
     var body: some View {
         VStack{
-            //            Text("Current Ruond: \(self.timerManager.repeatRound - self.timerManager.repeatRoundRemaining + 1), Round Remaining: \(self.timerManager.repeatRoundRemaining - 1 )")
-            //                .foregroundColor(.white)
-            //            Text("Wait Remaing: \(formatSecondsToMinSec(by: self.timerManager.waitTimeRemaining))")
-            //                .foregroundColor(.white)
-            //
-            //            Text("Round Remaing: \(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining))")
-            //                .foregroundColor(.white)
-            //
-            //            Text("Interval Remaing: \(formatSecondsToMinSec(by: self.timerManager.intervalTimeRemaining))")
-            //                .foregroundColor(.white)
-            ////            LazyVGrid(columns: gridItemLayout, spacing: 20) {
             HStack(alignment: .bottom){
                 VStack(alignment: .leading){
                     HStack(alignment: .bottom){
@@ -79,7 +81,7 @@ struct ClockDisplayView: View{
                         //                        .padding(40)
                         //                            .background(.cyan)
                             .font(.system(size: 70))
-//                            .bold()
+                        //                            .bold()
                         //                        .frame(maxWidth: .infinity, alignment: .leading)
                         Text("/")//CurrentRound
                             .foregroundColor(.white)
@@ -100,7 +102,7 @@ struct ClockDisplayView: View{
                         .font(.system(size: 20))
                     //                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-//                .background(.blue)
+                //                .background(.blue)
                 .padding(.leading, 10)
                 //                Divider().foregroundColor(.white)
                 
@@ -113,30 +115,34 @@ struct ClockDisplayView: View{
                     //                        .padding(.leading, 50)
                     //                        .padding(.trailing, 50)
                         .font(.system(size: 60))
-//                        .minimumScaleFactor(0.01)
+                    //                        .minimumScaleFactor(0.01)
                     Text("Interval Time")
                         .foregroundColor(.white)
                         .font(.system(size: 20))
                     
                 }
-//                .background(.brown)
+                //                .background(.brown)
                 .padding(.trailing, 10)
             }
             
-            Divider()
-                .background(.white)
+            if #available(iOS 15, *) {
+                Divider()
+                    .background(.white)
+            } else {
+                Divider()
+            }
             
             //                    .frame(width: 3000)
             //            }
             LazyVGrid(columns: gridItemLayout, spacing: 0) {
                 Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[0]))")
                     .foregroundColor(.white)
-//                    .frame(maxWidth: .infinity)
+                //                    .frame(maxWidth: .infinity)
                 //                    .background(.blue)
                     .font(.system(size: roundRemainingTimeFontSize))
                     .minimumScaleFactor(0.01)
                     .padding(.leading, 10)
-//                    .padding(.trailing, 10)
+                //                    .padding(.trailing, 10)
                     .onReceive(self.timerManager.currentTimePublisher) { _ in
                         if (self.timerManager.currentTimerStage == TimerManager.timerStage.Wait){
                             
@@ -165,33 +171,37 @@ struct ClockDisplayView: View{
                     }
                 Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[1]))")
                     .foregroundColor(.white)
-//                    .frame(maxWidth: .infinity)
+                //                    .frame(maxWidth: .infinity)
                 //                    .background(.blue)
                     .font(.system(size: roundRemainingTimeFontSize))
                     .minimumScaleFactor(0.01)
                 Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[2]))")
                     .foregroundColor(.white)
-//                    .frame(maxWidth: .infinity)
+                //                    .frame(maxWidth: .infinity)
                 //                    .background(.blue)
                     .font(.system(size: roundRemainingTimeFontSize))
                     .minimumScaleFactor(0.01)
                 Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[3]))")
                     .foregroundColor(.white)
-//                    .frame(maxWidth: .infinity)
+                //                    .frame(maxWidth: .infinity)
                 //                    .background(.blue)
                     .font(.system(size: roundRemainingTimeFontSize))
                     .minimumScaleFactor(0.01)
                 Text("\(String(formatSecondsToMinSec(by: self.timerManager.roundTimeRemaining)[4]))")
                     .foregroundColor(.white)
-//                    .frame(maxWidth: .infinity)
+                //                    .frame(maxWidth: .infinity)
                 //                    .background(.blue)
                     .font(.system(size: roundRemainingTimeFontSize))
                     .minimumScaleFactor(0.01)
-            }
-//            .background(Color.teal)
+            }.frame(maxWidth: 600)
+            //            .background(Color.teal)
             
-            Divider()
-                .background(.white)
+            if #available(iOS 15, *) {
+                Divider()
+                    .background(.white)
+            } else {
+                Divider()
+            }
             
             
             Text("\(formatSecondsToMinSec(by: self.timerManager.waitTimeRemaining))")
@@ -260,19 +270,19 @@ struct ControlBarView: View {
     var body: some View {
         HStack {
             ControlButton(systemIconName: "stop.circle", action: {
-                print("Stop Button Pressed")
+                //                print("Stop Button Pressed")
                 //                self.soundManager.playSound(name: "service-bell-ring-14610")
                 self.timerManager.manualStopTimer()
             })
             if (self.timerManager.isTiming){
                 ControlButton(systemIconName: "pause.circle", action: {
-                    print("Pause Button Pressed")
+                    //                    print("Pause Button Pressed")
                     //                self.soundManager.playSound(name: "service-bell-ring-14610")
                     self.timerManager.pauseTimer()
                 })
             } else {
                 ControlButton(systemIconName: "play.circle", action: {
-                    print("Start Button Pressed")
+                    //                    print("Start Button Pressed")
                     //                self.soundManager.playSound(name: "service-bell-ring-14610")
                     self.timerManager.startTimer()
                 })
